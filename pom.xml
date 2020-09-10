@@ -247,6 +247,7 @@
 				<version>${mvn.javadoc.plugin.version}</version>
 				<configuration>
 					<doclint>${doc-lint}</doclint>
+					<failOnError>false</failOnError>
 				</configuration>
 				<executions>
 					<execution>
