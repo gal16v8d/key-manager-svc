@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +23,13 @@ public class UsuarioService implements UserDetailsService {
 
     private static final String USUARIO_NO_VALIDO = "Usuario no válido";
 
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Optional<Usuario> findByUsername(String username) {
@@ -61,13 +61,8 @@ public class UsuarioService implements UserDetailsService {
         Optional<Usuario> usuarioOp = findByUsername(username);
         log.info("Encontrado {}", usuarioOp.isPresent());
         return usuarioOp.map(usuario -> new User(usuario.getUsername(),
-                passwordEncoder().encode(CifradoKeyManager.descifrarKM(usuario.getPassword())), new ArrayList<>()))
+                passwordEncoder.encode(CifradoKeyManager.descifrarKM(usuario.getPassword())), new ArrayList<>()))
                 .orElseThrow(() -> new ContrasenaException(USUARIO_NO_VALIDO));
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
 }
