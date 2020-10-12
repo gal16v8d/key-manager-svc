@@ -1,0 +1,1 @@
+INSERT INTO usuario VALUES (1, 'Administrador', 'KeyManager', 'admin', 'i9f+EBnazPE1Z9GDTVEvTg==', 1);
