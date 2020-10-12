@@ -22,12 +22,10 @@ public class UsuarioServiceTest {
 	private UsuarioService usuarioService;
 	@Mock
 	private UsuarioRepository usuarioRepository;
-	@Mock
-	private PasswordEncoder passwordEncoder;
 
 	@BeforeEach
 	public void setUp() {
-		usuarioService = BDDMockito.spy(new UsuarioService(usuarioRepository, passwordEncoder));
+		usuarioService = BDDMockito.spy(new UsuarioService(usuarioRepository));
 	}
 
 	@Test

@@ -12,18 +12,18 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import co.com.gsdd.keymanager.services.UsuarioService;
+import co.com.gsdd.keymanager.services.KMUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private final UsuarioService userService;
+	private final KMUserDetailsService userService;
 	private final PasswordEncoder passEncoder;
 
 	@Autowired
-	public SecurityConfig(UsuarioService userService, PasswordEncoder passEncoder) {
+	public SecurityConfig(KMUserDetailsService userService, PasswordEncoder passEncoder) {
 		this.userService = userService;
 		this.passEncoder = passEncoder;
 	}
