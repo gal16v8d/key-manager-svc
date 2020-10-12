@@ -62,6 +62,7 @@
 		<cypher-util.version>1.0.001</cypher-util.version>
 		<swagger.version>2.9.2</swagger.version>
 		<swagger-models.version>1.5.21</swagger-models.version>
+		<jjwt.version>0.9.1</jjwt.version>
 	</properties>
 
 	<dependencies>
@@ -120,6 +121,11 @@
 			<groupId>io.swagger</groupId>
 			<artifactId>swagger-models</artifactId>
 			<version>${swagger-models.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>${jjwt.version}</version>
 		</dependency>
 		<!-- Test -->
 		<dependency>
