@@ -36,92 +36,92 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping("/cuentas")
 public class CuentaXUsuarioController {
 
-    private static final String NO_EXISTE_UNA_CUENTA_QUE_COINCIDA_CON_LOS_VALORES_INGRESADOS = "No existe una cuenta que coincida con los valores ingresados.";
-    private final CuentaXUsuarioService cuentaxusuarioService;
-    private final CuentaXUsuarioConverter cuentaXUsuarioConverter;
-    private final CuentaXUsuarioRequestConverter cuentaXUsuarioRequestConverter;
-    private final UsuarioService usuarioService;
+	private static final String NO_EXISTE_UNA_CUENTA_QUE_COINCIDA_CON_LOS_VALORES_INGRESADOS = "No existe una cuenta que coincida con los valores ingresados.";
+	private final CuentaXUsuarioService cuentaxusuarioService;
+	private final CuentaXUsuarioConverter cuentaXUsuarioConverter;
+	private final CuentaXUsuarioRequestConverter cuentaXUsuarioRequestConverter;
+	private final UsuarioService usuarioService;
 
-    @Autowired
-    public CuentaXUsuarioController(CuentaXUsuarioService cuentaxusuarioService,
-            CuentaXUsuarioConverter cuentaXUsuarioConverter,
-            CuentaXUsuarioRequestConverter cuentaXUsuarioRequestConverter, UsuarioService usuarioService) {
-        this.cuentaxusuarioService = cuentaxusuarioService;
-        this.cuentaXUsuarioConverter = cuentaXUsuarioConverter;
-        this.cuentaXUsuarioRequestConverter = cuentaXUsuarioRequestConverter;
-        this.usuarioService = usuarioService;
-    }
+	@Autowired
+	public CuentaXUsuarioController(CuentaXUsuarioService cuentaxusuarioService,
+			CuentaXUsuarioConverter cuentaXUsuarioConverter,
+			CuentaXUsuarioRequestConverter cuentaXUsuarioRequestConverter, UsuarioService usuarioService) {
+		this.cuentaxusuarioService = cuentaxusuarioService;
+		this.cuentaXUsuarioConverter = cuentaXUsuarioConverter;
+		this.cuentaXUsuarioRequestConverter = cuentaXUsuarioRequestConverter;
+		this.usuarioService = usuarioService;
+	}
 
-    private Optional<CuentaXUsuario> findByUsernameAndCodigoCuenta(String loginUsuario, Long codigoCuenta) {
-        return usuarioService.findByUsername(loginUsuario).map(cuentaxusuarioService::findByUsuario)
-                .orElseGet(Collections::emptyList).stream()
-                .filter(cxu -> Objects.equals(codigoCuenta, cxu.getCodigoCuenta())).findAny();
-    }
+	private Optional<CuentaXUsuario> findByUsernameAndCodigoCuenta(String loginUsuario, Long codigoCuenta) {
+		return usuarioService.findByUsername(loginUsuario).map(cuentaxusuarioService::findByUsuario)
+				.orElseGet(Collections::emptyList).stream()
+				.filter(cxu -> Objects.equals(codigoCuenta, cxu.getCodigoCuenta())).findAny();
+	}
 
-    @ApiOperation(value = "Permite obtener una cuenta mediante su codigo.")
-    @GetMapping("/{loginUsuario}/{codigoCuenta}")
-    public ResponseEntity<?> get(@ApiParam(required = true) @PathVariable("loginUsuario") String loginUsuario,
-            @ApiParam(required = true) @PathVariable("codigoCuenta") Long codigoCuenta) {
-        return findByUsernameAndCodigoCuenta(loginUsuario, codigoCuenta).map(cuentaXUsuarioConverter::convert)
-                .map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
+	@ApiOperation(value = "Permite obtener una cuenta mediante su codigo.")
+	@GetMapping("/{loginUsuario}/{codigoCuenta}")
+	public ResponseEntity<?> get(@ApiParam(required = true) @PathVariable("loginUsuario") String loginUsuario,
+			@ApiParam(required = true) @PathVariable("codigoCuenta") Long codigoCuenta) {
+		return findByUsernameAndCodigoCuenta(loginUsuario, codigoCuenta).map(cuentaXUsuarioConverter::convert)
+				.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	}
 
-    @ApiOperation(value = "Permite obtener una cuenta mediante el usuario (requiere el login del usuario).")
-    @GetMapping("/{loginUsuario}")
-    public ResponseEntity<?> getAllByUser(
-            @ApiParam(required = true) @PathVariable("loginUsuario") String loginUsuario) {
-        return usuarioService.findByUsername(loginUsuario).map(cuentaxusuarioService::findByUsuario)
-                .map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
+	@ApiOperation(value = "Permite obtener una cuenta mediante el usuario (requiere el login del usuario).")
+	@GetMapping("/{loginUsuario}")
+	public ResponseEntity<?> getAllByUser(
+			@ApiParam(required = true) @PathVariable("loginUsuario") String loginUsuario) {
+		return usuarioService.findByUsername(loginUsuario).map(cuentaxusuarioService::findByUsuario)
+				.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	}
 
-    @ApiOperation(value = "Permite crear una cuenta.")
-    @PostMapping("/{loginUsuario}")
-    public ResponseEntity<?> save(@ApiParam(required = true) @PathVariable("loginUsuario") String loginUsuario,
-            @Valid @RequestBody CuentaXUsuarioRequest request, BindingResult bResultado) {
-        if (bResultado.hasErrors()) {
-            return new ResponseEntity<>(bResultado.getAllErrors(), HttpStatus.BAD_REQUEST);
-        }
-        if (!usuarioService.findByUsername(loginUsuario).isPresent()) {
-            return new ResponseEntity<>("Usuario no válido", HttpStatus.BAD_REQUEST);
-        }
-        CuentaXUsuario cuentaXUsuario = cuentaxusuarioService.save(cuentaXUsuarioRequestConverter.convert(request));
-        return Optional.ofNullable(cuentaXUsuario).map(dto -> ResponseEntity.status(HttpStatus.CREATED).body(dto))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
-    }
+	@ApiOperation(value = "Permite crear una cuenta.")
+	@PostMapping("/{loginUsuario}")
+	public ResponseEntity<?> save(@ApiParam(required = true) @PathVariable("loginUsuario") String loginUsuario,
+			@Valid @RequestBody CuentaXUsuarioRequest request, BindingResult bResultado) {
+		if (bResultado.hasErrors()) {
+			return new ResponseEntity<>(bResultado.getAllErrors(), HttpStatus.BAD_REQUEST);
+		}
+		if (!usuarioService.findByUsername(loginUsuario).isPresent()) {
+			return new ResponseEntity<>("Usuario no válido", HttpStatus.BAD_REQUEST);
+		}
+		CuentaXUsuario cuentaXUsuario = cuentaxusuarioService.save(cuentaXUsuarioRequestConverter.convert(request));
+		return Optional.ofNullable(cuentaXUsuario).map(dto -> ResponseEntity.status(HttpStatus.CREATED).body(dto))
+				.orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+	}
 
-    @ApiOperation(value = "Permite actualizar una cuenta.")
-    @PutMapping("/{loginUsuario}/{codigoCuenta}")
-    public ResponseEntity<?> update(@ApiParam(required = true) @PathVariable("loginUsuario") String loginUsuario,
-            @ApiParam(required = true) @PathVariable("codigoCuenta") Long codigoCuenta,
-            @Valid @RequestBody CuentaXUsuarioRequest request, BindingResult bResultado) {
-        if (bResultado.hasErrors()) {
-            return new ResponseEntity<>(bResultado.getAllErrors(), HttpStatus.BAD_REQUEST);
-        }
-        Optional<CuentaXUsuario> cuentaXUsuarioOp = findByUsernameAndCodigoCuenta(loginUsuario, codigoCuenta);
-        if (cuentaXUsuarioOp.isPresent()) {
-            CuentaXUsuario cuentaXUsuario = cuentaXUsuarioRequestConverter.convert(request);
-            cuentaXUsuario.setCodigoCuenta(codigoCuenta);
-            cuentaXUsuario.setFecha(Date.from(Instant.now()));
-            CuentaXUsuario cuentaActualizada = cuentaxusuarioService.update(cuentaXUsuario);
-            return Optional.ofNullable(cuentaActualizada).map(ResponseEntity::ok)
-                    .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_MODIFIED).build());
-        } else {
-            return getNotFoundResponse();
-        }
-    }
+	@ApiOperation(value = "Permite actualizar una cuenta.")
+	@PutMapping("/{loginUsuario}/{codigoCuenta}")
+	public ResponseEntity<?> update(@ApiParam(required = true) @PathVariable("loginUsuario") String loginUsuario,
+			@ApiParam(required = true) @PathVariable("codigoCuenta") Long codigoCuenta,
+			@Valid @RequestBody CuentaXUsuarioRequest request, BindingResult bResultado) {
+		if (bResultado.hasErrors()) {
+			return new ResponseEntity<>(bResultado.getAllErrors(), HttpStatus.BAD_REQUEST);
+		}
+		Optional<CuentaXUsuario> cuentaXUsuarioOp = findByUsernameAndCodigoCuenta(loginUsuario, codigoCuenta);
+		if (cuentaXUsuarioOp.isPresent()) {
+			CuentaXUsuario cuentaXUsuario = cuentaXUsuarioRequestConverter.convert(request);
+			cuentaXUsuario.setCodigoCuenta(codigoCuenta);
+			cuentaXUsuario.setFecha(Date.from(Instant.now()));
+			CuentaXUsuario cuentaActualizada = cuentaxusuarioService.update(cuentaXUsuario);
+			return Optional.ofNullable(cuentaActualizada).map(ResponseEntity::ok)
+					.orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_MODIFIED).build());
+		} else {
+			return getNotFoundResponse();
+		}
+	}
 
-    @ApiOperation(value = "Permite eliminar una cuenta.")
-    @DeleteMapping("/{loginUsuario}/{codigoCuenta}")
-    public ResponseEntity<?> delete(@ApiParam(required = true) @PathVariable("loginUsuario") String loginUsuario,
-            @ApiParam(required = true) @PathVariable("codigoCuenta") Long codigoCuenta) {
-        return findByUsernameAndCodigoCuenta(loginUsuario, codigoCuenta).map((CuentaXUsuario cxu) -> {
-            cuentaxusuarioService.delete(codigoCuenta);
-            return ResponseEntity.noContent().build();
-        }).orElseGet(this::getNotFoundResponse);
-    }
+	@ApiOperation(value = "Permite eliminar una cuenta.")
+	@DeleteMapping("/{loginUsuario}/{codigoCuenta}")
+	public ResponseEntity<?> delete(@ApiParam(required = true) @PathVariable("loginUsuario") String loginUsuario,
+			@ApiParam(required = true) @PathVariable("codigoCuenta") Long codigoCuenta) {
+		return findByUsernameAndCodigoCuenta(loginUsuario, codigoCuenta).map((CuentaXUsuario cxu) -> {
+			cuentaxusuarioService.delete(codigoCuenta);
+			return ResponseEntity.noContent().build();
+		}).orElseGet(this::getNotFoundResponse);
+	}
 
-    private ResponseEntity<Object> getNotFoundResponse() {
-        return new ResponseEntity<>(NO_EXISTE_UNA_CUENTA_QUE_COINCIDA_CON_LOS_VALORES_INGRESADOS, HttpStatus.NOT_FOUND);
-    }
+	private ResponseEntity<Object> getNotFoundResponse() {
+		return new ResponseEntity<>(NO_EXISTE_UNA_CUENTA_QUE_COINCIDA_CON_LOS_VALORES_INGRESADOS, HttpStatus.NOT_FOUND);
+	}
 
 }
