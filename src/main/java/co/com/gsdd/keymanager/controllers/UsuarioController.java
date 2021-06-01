@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -25,7 +24,9 @@ import co.com.gsdd.keymanager.services.UsuarioService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Api("Usuarios")
 @RestController
 @RequestMapping("/usuarios")
@@ -34,12 +35,6 @@ public class UsuarioController {
 	private static final String NO_EXISTE_UN_USUARIO_QUE_COINCIDA_CON_LOS_VALORES_INGRESADOS = "No existe un usuario que coincida con los valores ingresados.";
 	private final UsuarioService usuarioService;
 	private final UsuarioRequestConverter usuarioRequestConverter;
-
-	@Autowired
-	public UsuarioController(UsuarioService usuarioService, UsuarioRequestConverter usuarioRequestConverter) {
-		this.usuarioService = usuarioService;
-		this.usuarioRequestConverter = usuarioRequestConverter;
-	}
 
 	private Optional<Usuario> findByCodigoUsuario(Long codigoUsuario) {
 		return usuarioService.findByCodigoUsuario(codigoUsuario);

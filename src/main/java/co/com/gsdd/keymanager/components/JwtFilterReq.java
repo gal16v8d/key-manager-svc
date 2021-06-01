@@ -16,17 +16,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import co.com.gsdd.keymanager.services.KMUserDetailsService;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Component
 public class JwtFilterReq extends OncePerRequestFilter {
 
 	private final JWTUtil jwtUtil;
 	private final KMUserDetailsService kmUserDetailsService;
-
-	public JwtFilterReq(JWTUtil jwtUtil, KMUserDetailsService kmUserDetailsService) {
-		this.jwtUtil = jwtUtil;
-		this.kmUserDetailsService = kmUserDetailsService;
-	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

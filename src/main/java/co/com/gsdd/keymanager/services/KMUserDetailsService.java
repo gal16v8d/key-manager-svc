@@ -3,7 +3,6 @@ package co.com.gsdd.keymanager.services;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,9 +14,11 @@ import co.com.gsdd.keymanager.entities.Usuario;
 import co.com.gsdd.keymanager.exceptions.ContrasenaException;
 import co.com.gsdd.keymanager.repositories.UsuarioRepository;
 import co.com.gsdd.keymanager.utils.CifradoKeyManager;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class KMUserDetailsService implements UserDetailsService {
 
@@ -25,12 +26,6 @@ public class KMUserDetailsService implements UserDetailsService {
 
 	private final UsuarioRepository usuarioRepository;
 	private final PasswordEncoder passwordEncoder;
-
-	@Autowired
-	public KMUserDetailsService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
-		this.usuarioRepository = usuarioRepository;
-		this.passwordEncoder = passwordEncoder;
-	}
 
 	@Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

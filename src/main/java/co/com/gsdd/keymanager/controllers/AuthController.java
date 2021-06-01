@@ -1,6 +1,5 @@
 package co.com.gsdd.keymanager.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +18,9 @@ import co.com.gsdd.keymanager.responses.AuthResponse;
 import co.com.gsdd.keymanager.services.KMUserDetailsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Api("Auth")
 @RestController
 @RequestMapping("/auth")
@@ -28,13 +29,6 @@ public class AuthController {
 	private final AuthenticationManager authManager;
 	private final KMUserDetailsService userDetailsService;
 	private final JWTUtil jwtUtil;
-
-	@Autowired
-	public AuthController(AuthenticationManager authManager, KMUserDetailsService userDetailsService, JWTUtil jwtUtil) {
-		this.authManager = authManager;
-		this.userDetailsService = userDetailsService;
-		this.jwtUtil = jwtUtil;
-	}
 
 	@ApiOperation(value = "Permite autenticar a un usuario.")
 	@GetMapping("/login")

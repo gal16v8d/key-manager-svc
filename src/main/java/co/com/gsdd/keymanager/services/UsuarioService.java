@@ -7,16 +7,13 @@ import org.springframework.stereotype.Service;
 
 import co.com.gsdd.keymanager.entities.Usuario;
 import co.com.gsdd.keymanager.repositories.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Service
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-
-    @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
 
     public Optional<Usuario> findByUsername(String username) {
         return Optional.ofNullable(usuarioRepository.findByUsername(username));

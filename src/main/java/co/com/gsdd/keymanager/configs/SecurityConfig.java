@@ -16,7 +16,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import co.com.gsdd.keymanager.components.JwtFilterReq;
 import co.com.gsdd.keymanager.services.KMUserDetailsService;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -25,14 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final KMUserDetailsService userService;
 	private final PasswordEncoder passEncoder;
 	private final JwtFilterReq jwtFilterReq;
-
-	@Autowired
-	public SecurityConfig(KMUserDetailsService userService, PasswordEncoder passEncoder, JwtFilterReq jwtFilterReq) {
-		this.userService = userService;
-		this.passEncoder = passEncoder;
-		this.jwtFilterReq = jwtFilterReq;
-	}
-
+	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userService);

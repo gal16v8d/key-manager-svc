@@ -8,7 +8,6 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -30,7 +29,9 @@ import co.com.gsdd.keymanager.services.UsuarioService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Api("Cuentas")
 @RestController
 @RequestMapping("/cuentas")
@@ -41,16 +42,6 @@ public class CuentaXUsuarioController {
 	private final CuentaXUsuarioConverter cuentaXUsuarioConverter;
 	private final CuentaXUsuarioRequestConverter cuentaXUsuarioRequestConverter;
 	private final UsuarioService usuarioService;
-
-	@Autowired
-	public CuentaXUsuarioController(CuentaXUsuarioService cuentaxusuarioService,
-			CuentaXUsuarioConverter cuentaXUsuarioConverter,
-			CuentaXUsuarioRequestConverter cuentaXUsuarioRequestConverter, UsuarioService usuarioService) {
-		this.cuentaxusuarioService = cuentaxusuarioService;
-		this.cuentaXUsuarioConverter = cuentaXUsuarioConverter;
-		this.cuentaXUsuarioRequestConverter = cuentaXUsuarioRequestConverter;
-		this.usuarioService = usuarioService;
-	}
 
 	private Optional<CuentaXUsuario> findByUsernameAndCodigoCuenta(String loginUsuario, Long codigoCuenta) {
 		return usuarioService.findByUsername(loginUsuario).map(cuentaxusuarioService::findByUsuario)

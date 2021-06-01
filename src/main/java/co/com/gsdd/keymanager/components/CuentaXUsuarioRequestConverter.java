@@ -4,26 +4,22 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import co.com.gsdd.keymanager.entities.CuentaXUsuario;
 import co.com.gsdd.keymanager.entities.CuentaXUsuario.CuentaXUsuarioBuilder;
-import co.com.gsdd.keymanager.requests.CuentaXUsuarioRequest;
 import co.com.gsdd.keymanager.entities.Usuario;
+import co.com.gsdd.keymanager.requests.CuentaXUsuarioRequest;
 import co.com.gsdd.keymanager.services.UsuarioService;
 import co.com.gsdd.keymanager.utils.CifradoKeyManager;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Component
 public class CuentaXUsuarioRequestConverter implements Converter<CuentaXUsuarioRequest, CuentaXUsuario> {
 
     private final UsuarioService usuarioService;
-
-    @Autowired
-    public CuentaXUsuarioRequestConverter(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
 
     @Override
     public CuentaXUsuario convert(CuentaXUsuarioRequest source) {
