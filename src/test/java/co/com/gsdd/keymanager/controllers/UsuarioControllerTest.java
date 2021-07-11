@@ -28,7 +28,7 @@ import co.com.gsdd.keymanager.requests.UsuarioRequest;
 import co.com.gsdd.keymanager.services.UsuarioService;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class UsuarioControllerTest {
+class UsuarioControllerTest {
 
 	private static final String URL_REQUEST = "/usuarios/{codigoUsuario}";
 	private static final String MOCK_PWD = "123456";
@@ -47,12 +47,12 @@ public class UsuarioControllerTest {
 	private MockMvc mvc;
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		mvc = MockMvcBuilders.webAppContextSetup(context).build();
 	}
 
 	@Test
-	public void getByLoginTest() throws Exception {
+	void getByLoginTest() throws Exception {
 		BDDMockito.given(usuarioService.findByUsername(MOCK_LOGIN))
 				.willReturn(Optional.ofNullable(Usuario.builder().build()));
 		mvc.perform(MockMvcRequestBuilders.get("/usuarios").param(PARAM_LOGIN, MOCK_LOGIN)
@@ -60,14 +60,14 @@ public class UsuarioControllerTest {
 	}
 
 	@Test
-	public void getByLoginNotFoundTest() throws Exception {
+	void getByLoginNotFoundTest() throws Exception {
 		BDDMockito.given(usuarioService.findByUsername(MOCK_LOGIN)).willReturn(Optional.empty());
 		mvc.perform(MockMvcRequestBuilders.get("/usuarios").param(PARAM_LOGIN, MOCK_LOGIN)
 				.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
 	}
 
 	@Test
-	public void getTest() throws Exception {
+	void getTest() throws Exception {
 		BDDMockito.given(usuarioService.findByCodigoUsuario(MOCK_CODE))
 				.willReturn(Optional.ofNullable(Usuario.builder().build()));
 		mvc.perform(MockMvcRequestBuilders.get(URL_REQUEST, MOCK_CODE).contentType(MediaType.APPLICATION_JSON))
@@ -75,7 +75,7 @@ public class UsuarioControllerTest {
 	}
 
 	@Test
-	public void getNotFoundTest() throws Exception {
+	void getNotFoundTest() throws Exception {
 		BDDMockito.given(usuarioService.findByCodigoUsuario(MOCK_CODE)).willReturn(Optional.empty());
 		mvc.perform(MockMvcRequestBuilders.get(URL_REQUEST, MOCK_CODE).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
@@ -101,7 +101,7 @@ public class UsuarioControllerTest {
 	}
 
 	@Test
-	public void updateTest() throws Exception {
+	void updateTest() throws Exception {
 		BDDMockito.given(usuarioService.findByCodigoUsuario(MOCK_CODE))
 				.willReturn(Optional.ofNullable(Usuario.builder().build()));
 		Usuario user = Usuario.builder().codigoUsuario(MOCK_CODE).primerNombre(MOCK_FIRST_NAME)
@@ -117,7 +117,7 @@ public class UsuarioControllerTest {
 	}
 
 	@Test
-	public void updateNotModifiedTest() throws Exception {
+	void updateNotModifiedTest() throws Exception {
 		BDDMockito.given(usuarioService.findByCodigoUsuario(MOCK_CODE))
 				.willReturn(Optional.ofNullable(Usuario.builder().build()));
 		Usuario user = Usuario.builder().build();
@@ -130,7 +130,7 @@ public class UsuarioControllerTest {
 	}
 
 	@Test
-	public void updateNotFoundTest() throws Exception {
+	void updateNotFoundTest() throws Exception {
 		BDDMockito.given(usuarioService.findByCodigoUsuario(MOCK_CODE)).willReturn(Optional.empty());
 		mvc.perform(MockMvcRequestBuilders.put(URL_REQUEST, MOCK_CODE)
 				.content(asJsonString(
@@ -139,7 +139,7 @@ public class UsuarioControllerTest {
 	}
 
 	@Test
-	public void deleteTest() throws Exception {
+	void deleteTest() throws Exception {
 		BDDMockito.given(usuarioService.findByCodigoUsuario(MOCK_CODE))
 				.willReturn(Optional.ofNullable(Usuario.builder().build()));
 		BDDMockito.doNothing().when(usuarioService).delete(MOCK_CODE);
@@ -148,7 +148,7 @@ public class UsuarioControllerTest {
 	}
 
 	@Test
-	public void deleteNotFoundTest() throws Exception {
+	void deleteNotFoundTest() throws Exception {
 		BDDMockito.given(usuarioService.findByCodigoUsuario(MOCK_CODE)).willReturn(Optional.empty());
 		mvc.perform(MockMvcRequestBuilders.delete(URL_REQUEST, MOCK_CODE).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());

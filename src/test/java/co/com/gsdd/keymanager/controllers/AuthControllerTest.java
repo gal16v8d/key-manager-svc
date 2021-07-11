@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class AuthControllerTest {
+class AuthControllerTest {
 
 	@Autowired
 	private WebApplicationContext context;
@@ -21,12 +21,12 @@ public class AuthControllerTest {
 	private MockMvc mvc;
 
 	@BeforeEach
-	public void setup() {
+	void setup() {
 		mvc = MockMvcBuilders.webAppContextSetup(context).build();
 	}
 
 	@Test
-	public void basicAuthTest() throws Exception {
+	void basicAuthTest() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.get("/auth/login").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().string("Autenticado"));

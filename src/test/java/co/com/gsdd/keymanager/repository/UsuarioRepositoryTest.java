@@ -12,7 +12,7 @@ import co.com.gsdd.keymanager.entities.Usuario;
 import co.com.gsdd.keymanager.repositories.UsuarioRepository;
 
 @DataJpaTest
-public class UsuarioRepositoryTest {
+class UsuarioRepositoryTest {
 	
 	@Autowired
     private TestEntityManager entityManager;
@@ -20,7 +20,7 @@ public class UsuarioRepositoryTest {
 	private UsuarioRepository usuarioRepository;
 
 	@Test
-	public void ifPrimerNombreIsLongThenFailTest() {
+	void ifPrimerNombreIsLongThenFailTest() {
 		Usuario user = Usuario.builder().primerNombre("Abcdefghijklmnopq").primerApellido("test").codigoUsuario(1L)
 				.password("test").username("agalvis").rol(null).build();
 		usuarioRepository.save(user);

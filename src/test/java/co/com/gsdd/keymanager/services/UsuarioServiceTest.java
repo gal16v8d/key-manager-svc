@@ -13,7 +13,7 @@ import co.com.gsdd.keymanager.entities.Usuario;
 import co.com.gsdd.keymanager.repositories.UsuarioRepository;
 
 @ExtendWith(SpringExtension.class)
-public class UsuarioServiceTest {
+class UsuarioServiceTest {
 
 	private static final String MOCK_USERNAME = "agalvis";
 	private static final String MOCK_PWD = "123456";
@@ -23,31 +23,31 @@ public class UsuarioServiceTest {
 	private UsuarioRepository usuarioRepository;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		usuarioService = BDDMockito.spy(new UsuarioService(usuarioRepository));
 	}
 
 	@Test
-	public void givenUserNotFoundThenfindByUsernameReturnTest() {
+	void givenUserNotFoundThenfindByUsernameReturnTest() {
 		BDDMockito.given(usuarioRepository.findByUsername(Mockito.anyString())).willReturn(null);
 		Assertions.assertFalse(usuarioService.findByUsername(MOCK_USERNAME).isPresent());
 	}
 
 	@Test
-	public void givenUserFoundThenfindByUsernameReturnTest() {
+	void givenUserFoundThenfindByUsernameReturnTest() {
 		BDDMockito.given(usuarioRepository.findByUsername(Mockito.anyString())).willReturn(Usuario.builder().build());
 		Assertions.assertTrue(usuarioService.findByUsername(MOCK_USERNAME).isPresent());
 	}
 
 	@Test
-	public void givenUserNotFoundThenfindByUsernameAndPasswordReturnTest() {
+	void givenUserNotFoundThenfindByUsernameAndPasswordReturnTest() {
 		BDDMockito.given(usuarioRepository.findByUsernameAndPassword(Mockito.anyString(), Mockito.anyString()))
 				.willReturn(null);
 		Assertions.assertFalse(usuarioService.findByUsernameAndPassword(MOCK_USERNAME, MOCK_PWD).isPresent());
 	}
 
 	@Test
-	public void givenUserFoundThenfindByUsernameAndPasswordReturnTest() {
+	void givenUserFoundThenfindByUsernameAndPasswordReturnTest() {
 		BDDMockito.given(usuarioRepository.findByUsernameAndPassword(Mockito.anyString(), Mockito.anyString()))
 				.willReturn(Usuario.builder().build());
 		Assertions.assertTrue(usuarioService.findByUsernameAndPassword(MOCK_USERNAME, MOCK_PWD).isPresent());
