@@ -8,15 +8,15 @@
 		<version>2.3.9.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>co.com.gsdd</groupId>
+	<groupId>com.gsdd</groupId>
 	<artifactId>key-manager-svc</artifactId>
 	<version>1.0.001</version>
 	<packaging>jar</packaging>
 
+	<name>key-manager-svc</name>
 	<organization>
 		<name>GSDD</name>
 	</organization>
-	<name>key-manager-svc</name>
 
 	<repositories>
 		<repository>
@@ -36,7 +36,7 @@
 		<project.reporting.outputEncoding>${project.encoding}</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 
-		<mvn.jacoco.plugin.version>0.8.5</mvn.jacoco.plugin.version>
+		<mvn.jacoco.plugin.version>0.8.7</mvn.jacoco.plugin.version>
 		<mvn.failsafe.plugin.version>3.0.0-M4</mvn.failsafe.plugin.version>
 		<mvn.surefire.plugin.version>3.0.0-M4</mvn.surefire.plugin.version>
 		<mvn.javadoc.plugin.version>3.2.0</mvn.javadoc.plugin.version>
@@ -55,8 +55,7 @@
 		<jacoco.it.exec>${project.build.directory}/coverage-reports/jacoco-it.exec</jacoco.it.exec>
 		<jacoco.it.reportPath>${project.build.directory}/coverage-reports/jacoco-it</jacoco.it.reportPath>
 
-		<log4j.bridge.version>2.9.0</log4j.bridge.version>
-		<log4j.version>2.13.3</log4j.version>
+		<log4j.version>2.15.0</log4j.version>
 		<derby.version>10.12.1.1</derby.version>
 		<cypher-util.version>1.0.001</cypher-util.version>
 		<swagger.version>3.0.0</swagger.version>
@@ -126,7 +125,7 @@
 		</dependency>
 		<!-- Dependencias internas -->
 		<dependency>
-			<groupId>co.com.gsdd</groupId>
+			<groupId>com.gsdd</groupId>
 			<artifactId>cypher-util</artifactId>
 			<version>${cypher-util.version}</version>
 		</dependency>
@@ -263,6 +262,9 @@
 				<groupId>net.revelc.code.formatter</groupId>
 				<artifactId>formatter-maven-plugin</artifactId>
 				<version>${mvn.format.plugin.version}</version>
+				<configuration>
+					<configFile>${project.basedir}/eclipse-java-google-style.xml</configFile>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>
