@@ -8,5 +8,4 @@ class KeymanagerApplicationTest {
 
   @Test
   void contextLoads() {}
-
 }

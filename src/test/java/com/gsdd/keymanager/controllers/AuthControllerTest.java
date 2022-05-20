@@ -15,8 +15,7 @@ import org.springframework.web.context.WebApplicationContext;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class AuthControllerTest {
 
-  @Autowired
-  private WebApplicationContext context;
+  @Autowired private WebApplicationContext context;
 
   private MockMvc mvc;
 

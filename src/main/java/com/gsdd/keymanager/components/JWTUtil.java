@@ -1,22 +1,24 @@
 package com.gsdd.keymanager.components;
 
-import java.time.Instant;
-import java.util.Date;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 import com.gsdd.keymanager.utils.CifradoKeyManager;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.time.Instant;
+import java.util.Date;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 @Component
 public class JWTUtil {
 
   public String generateToken(UserDetails userDetails) {
-    return Jwts.builder().setSubject(userDetails.getUsername())
+    return Jwts.builder()
+        .setSubject(userDetails.getUsername())
         .setIssuedAt(Date.from(Instant.now()))
         .setExpiration(Date.from(Instant.now().plusSeconds(60 * 15)))
-        .signWith(SignatureAlgorithm.HS256, CifradoKeyManager.KM_SALT).compact();
+        .signWith(SignatureAlgorithm.HS256, CifradoKeyManager.KM_SALT)
+        .compact();
   }
 
   public boolean validateToken(String token, UserDetails userDetails) {

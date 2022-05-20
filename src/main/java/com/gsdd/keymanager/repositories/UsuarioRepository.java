@@ -1,8 +1,8 @@
 package com.gsdd.keymanager.repositories;
 
+import com.gsdd.keymanager.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.gsdd.keymanager.entities.Usuario;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {

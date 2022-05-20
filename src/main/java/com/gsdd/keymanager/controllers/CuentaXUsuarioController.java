@@ -1,11 +1,20 @@
 package com.gsdd.keymanager.controllers;
 
+import com.gsdd.keymanager.components.CuentaXUsuarioConverter;
+import com.gsdd.keymanager.components.CuentaXUsuarioRequestConverter;
+import com.gsdd.keymanager.entities.CuentaXUsuario;
+import com.gsdd.keymanager.requests.CuentaXUsuarioRequest;
+import com.gsdd.keymanager.services.CuentaXUsuarioService;
+import com.gsdd.keymanager.services.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,19 +26,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.gsdd.keymanager.components.CuentaXUsuarioConverter;
-import com.gsdd.keymanager.components.CuentaXUsuarioRequestConverter;
-import com.gsdd.keymanager.entities.CuentaXUsuario;
-import com.gsdd.keymanager.requests.CuentaXUsuarioRequest;
-import com.gsdd.keymanager.services.CuentaXUsuarioService;
-import com.gsdd.keymanager.services.UsuarioService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import lombok.RequiredArgsConstructor;
 
+@Tag(name = "Cuenta CRUD")
 @RequiredArgsConstructor
-@Api("Cuentas")
 @RestController
 @RequestMapping("/cuentas")
 public class CuentaXUsuarioController {
@@ -41,37 +40,45 @@ public class CuentaXUsuarioController {
   private final CuentaXUsuarioRequestConverter cuentaXUsuarioRequestConverter;
   private final UsuarioService usuarioService;
 
-  private Optional<CuentaXUsuario> findByUsernameAndCodigoCuenta(String loginUsuario,
-      Long codigoCuenta) {
-    return usuarioService.findByUsername(loginUsuario).map(cuentaxusuarioService::findByUsuario)
-        .orElseGet(Collections::emptyList).stream()
-        .filter(cxu -> Objects.equals(codigoCuenta, cxu.getCodigoCuenta())).findAny();
+  private Optional<CuentaXUsuario> findByUsernameAndCodigoCuenta(
+      String loginUsuario, Long codigoCuenta) {
+    return usuarioService
+        .findByUsername(loginUsuario)
+        .map(cuentaxusuarioService::findByUsuario)
+        .orElseGet(Collections::emptyList)
+        .stream()
+        .filter(cxu -> Objects.equals(codigoCuenta, cxu.getCodigoCuenta()))
+        .findAny();
   }
 
-  @ApiOperation(value = "Permite obtener una cuenta mediante su codigo.")
+  @Operation(summary = "Permite obtener una cuenta mediante su codigo.")
   @GetMapping("/{loginUsuario}/{codigoCuenta}")
   public ResponseEntity<?> get(
-      @ApiParam(required = true) @PathVariable("loginUsuario") String loginUsuario,
-      @ApiParam(required = true) @PathVariable("codigoCuenta") Long codigoCuenta) {
+      @PathVariable("loginUsuario") String loginUsuario,
+      @PathVariable("codigoCuenta") Long codigoCuenta) {
     return findByUsernameAndCodigoCuenta(loginUsuario, codigoCuenta)
-        .map(cuentaXUsuarioConverter::convert).map(ResponseEntity::ok)
+        .map(cuentaXUsuarioConverter::convert)
+        .map(ResponseEntity::ok)
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
-  @ApiOperation(
-      value = "Permite obtener una cuenta mediante el usuario (requiere el login del usuario).")
+  @Operation(
+      summary = "Permite obtener una cuenta mediante el usuario (requiere el login del usuario).")
   @GetMapping("/{loginUsuario}")
-  public ResponseEntity<?> getAllByUser(
-      @ApiParam(required = true) @PathVariable("loginUsuario") String loginUsuario) {
-    return usuarioService.findByUsername(loginUsuario).map(cuentaxusuarioService::findByUsuario)
-        .map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+  public ResponseEntity<?> getAllByUser(@PathVariable("loginUsuario") String loginUsuario) {
+    return usuarioService
+        .findByUsername(loginUsuario)
+        .map(cuentaxusuarioService::findByUsuario)
+        .map(ResponseEntity::ok)
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
-  @ApiOperation(value = "Permite crear una cuenta.")
+  @Operation(summary = "Permite crear una cuenta.")
   @PostMapping("/{loginUsuario}")
   public ResponseEntity<?> save(
-      @ApiParam(required = true) @PathVariable("loginUsuario") String loginUsuario,
-      @Valid @RequestBody CuentaXUsuarioRequest request, BindingResult bResultado) {
+      @PathVariable("loginUsuario") String loginUsuario,
+      @Valid @RequestBody CuentaXUsuarioRequest request,
+      BindingResult bResultado) {
     if (bResultado.hasErrors()) {
       return new ResponseEntity<>(bResultado.getAllErrors(), HttpStatus.BAD_REQUEST);
     }
@@ -85,12 +92,13 @@ public class CuentaXUsuarioController {
         .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
   }
 
-  @ApiOperation(value = "Permite actualizar una cuenta.")
+  @Operation(summary = "Permite actualizar una cuenta.")
   @PutMapping("/{loginUsuario}/{codigoCuenta}")
   public ResponseEntity<?> update(
-      @ApiParam(required = true) @PathVariable("loginUsuario") String loginUsuario,
-      @ApiParam(required = true) @PathVariable("codigoCuenta") Long codigoCuenta,
-      @Valid @RequestBody CuentaXUsuarioRequest request, BindingResult bResultado) {
+      @PathVariable("loginUsuario") String loginUsuario,
+      @PathVariable("codigoCuenta") Long codigoCuenta,
+      @Valid @RequestBody CuentaXUsuarioRequest request,
+      BindingResult bResultado) {
     if (bResultado.hasErrors()) {
       return new ResponseEntity<>(bResultado.getAllErrors(), HttpStatus.BAD_REQUEST);
     }
@@ -101,27 +109,30 @@ public class CuentaXUsuarioController {
       cuentaXUsuario.setCodigoCuenta(codigoCuenta);
       cuentaXUsuario.setFecha(Date.from(Instant.now()));
       CuentaXUsuario cuentaActualizada = cuentaxusuarioService.update(cuentaXUsuario);
-      return Optional.ofNullable(cuentaActualizada).map(ResponseEntity::ok)
+      return Optional.ofNullable(cuentaActualizada)
+          .map(ResponseEntity::ok)
           .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_MODIFIED).build());
     } else {
       return getNotFoundResponse();
     }
   }
 
-  @ApiOperation(value = "Permite eliminar una cuenta.")
+  @Operation(summary = "Permite eliminar una cuenta.")
   @DeleteMapping("/{loginUsuario}/{codigoCuenta}")
   public ResponseEntity<?> delete(
-      @ApiParam(required = true) @PathVariable("loginUsuario") String loginUsuario,
-      @ApiParam(required = true) @PathVariable("codigoCuenta") Long codigoCuenta) {
-    return findByUsernameAndCodigoCuenta(loginUsuario, codigoCuenta).map((CuentaXUsuario cxu) -> {
-      cuentaxusuarioService.delete(codigoCuenta);
-      return ResponseEntity.noContent().build();
-    }).orElseGet(this::getNotFoundResponse);
+      @PathVariable("loginUsuario") String loginUsuario,
+      @PathVariable("codigoCuenta") Long codigoCuenta) {
+    return findByUsernameAndCodigoCuenta(loginUsuario, codigoCuenta)
+        .map(
+            (CuentaXUsuario cxu) -> {
+              cuentaxusuarioService.delete(codigoCuenta);
+              return ResponseEntity.noContent().build();
+            })
+        .orElseGet(this::getNotFoundResponse);
   }
 
   private ResponseEntity<Object> getNotFoundResponse() {
-    return new ResponseEntity<>(NO_EXISTE_UNA_CUENTA_QUE_COINCIDA_CON_LOS_VALORES_INGRESADOS,
-        HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>(
+        NO_EXISTE_UNA_CUENTA_QUE_COINCIDA_CON_LOS_VALORES_INGRESADOS, HttpStatus.NOT_FOUND);
   }
-
 }

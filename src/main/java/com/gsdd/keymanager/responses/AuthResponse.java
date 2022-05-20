@@ -10,5 +10,4 @@ import lombok.Generated;
 public class AuthResponse {
 
   private String jwt;
-
 }

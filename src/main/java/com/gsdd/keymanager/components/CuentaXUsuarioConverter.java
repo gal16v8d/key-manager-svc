@@ -1,12 +1,12 @@
 package com.gsdd.keymanager.components;
 
-import java.util.Optional;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
 import com.gsdd.keymanager.entities.CuentaXUsuario;
 import com.gsdd.keymanager.entities.Usuario;
 import com.gsdd.keymanager.requests.CuentaXUsuarioRequest;
 import com.gsdd.keymanager.utils.CifradoKeyManager;
+import java.util.Optional;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
 @Component
 public class CuentaXUsuarioConverter implements Converter<CuentaXUsuario, CuentaXUsuarioRequest> {
@@ -28,5 +28,4 @@ public class CuentaXUsuarioConverter implements Converter<CuentaXUsuario, Cuenta
     }
     return null;
   }
-
 }

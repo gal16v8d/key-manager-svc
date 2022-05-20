@@ -1,10 +1,10 @@
 package com.gsdd.keymanager.services;
 
-import java.util.Optional;
-import org.springframework.stereotype.Service;
 import com.gsdd.keymanager.entities.Usuario;
 import com.gsdd.keymanager.repositories.UsuarioRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
@@ -35,5 +35,4 @@ public class UsuarioService {
   public void delete(Long codigoUsuario) {
     usuarioRepository.deleteById(codigoUsuario);
   }
-
 }

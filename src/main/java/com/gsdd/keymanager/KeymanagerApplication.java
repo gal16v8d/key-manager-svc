@@ -1,5 +1,8 @@
 package com.gsdd.keymanager;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
 import java.util.Arrays;
 import java.util.Collections;
 import org.springframework.boot.SpringApplication;
@@ -15,9 +18,21 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @SpringBootApplication
-@ComponentScan({KeymanagerApplication.COMPONENT, KeymanagerApplication.COMPONENT,
-    KeymanagerApplication.CONFIG, KeymanagerApplication.CONTROLLER, KeymanagerApplication.REPO,
-    KeymanagerApplication.SERVICES})
+@ComponentScan({
+  KeymanagerApplication.COMPONENT,
+  KeymanagerApplication.COMPONENT,
+  KeymanagerApplication.CONFIG,
+  KeymanagerApplication.CONTROLLER,
+  KeymanagerApplication.REPO,
+  KeymanagerApplication.SERVICES
+})
+@OpenAPIDefinition(
+    info =
+        @Info(
+            title = "KeyManager API",
+            version = "2.0",
+            description = "REST with Spring-Boot & Derby",
+            contact = @Contact(email = "alex.galvis.sistemas@gmail.com")))
 public class KeymanagerApplication {
 
   public static final String BASE = "com.gsdd.keymanager";
@@ -50,5 +65,4 @@ public class KeymanagerApplication {
     bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
     return bean;
   }
-
 }

@@ -15,10 +15,9 @@ import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 /**
- * 
  * @author Great System Development Dynamic <GSDD> <br>
- *         Alexander Galvis Grisales <br>
- *         alex.galvis.sistemas@gmail.com <br>
+ *     Alexander Galvis Grisales <br>
+ *     alex.galvis.sistemas@gmail.com <br>
  * @version 1.0
  */
 @Generated
@@ -31,17 +30,23 @@ import lombok.NoArgsConstructor;
 public class Usuario implements Serializable {
 
   private static final long serialVersionUID = 2383390124298097984L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long codigoUsuario;
+
   @Column(name = "primer_nombre", nullable = false, length = 16)
   private String primerNombre;
+
   @Column(name = "primer_apellido", nullable = false, length = 16)
   private String primerApellido;
+
   @Column(name = "username", unique = true, nullable = false, length = 64)
   private String username;
+
   @Column(name = "password", nullable = false, length = 128)
   private String password;
+
   @Column(name = "rol", nullable = false)
   private Long rol;
 }

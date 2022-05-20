@@ -1,12 +1,12 @@
 package com.gsdd.keymanager.requests;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.Generated;
 
 @Generated
 @Data
-@ApiModel(description = "Propiedades base para autenticarse en el app.")
+@Schema(description = "Propiedades base para autenticarse en el app.")
 public class AuthRequest {
 
   private String username;

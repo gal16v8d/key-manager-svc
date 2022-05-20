@@ -3,6 +3,12 @@ package com.gsdd.keymanager.controllers;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gsdd.keymanager.components.UsuarioRequestConverter;
+import com.gsdd.keymanager.entities.Usuario;
+import com.gsdd.keymanager.requests.UsuarioRequest;
+import com.gsdd.keymanager.services.UsuarioService;
 import java.util.Optional;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,11 +23,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gsdd.keymanager.components.UsuarioRequestConverter;
-import com.gsdd.keymanager.entities.Usuario;
-import com.gsdd.keymanager.requests.UsuarioRequest;
-import com.gsdd.keymanager.services.UsuarioService;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class UsuarioControllerTest {
@@ -34,12 +35,9 @@ class UsuarioControllerTest {
   private static final String PARAM_LOGIN = "login";
   private static final String MOCK_LOGIN = "";
   private static final long MOCK_CODE = 1L;
-  @Autowired
-  private WebApplicationContext context;
-  @MockBean
-  private UsuarioService usuarioService;
-  @MockBean
-  private UsuarioRequestConverter usuarioRequestConverter;
+  @Autowired private WebApplicationContext context;
+  @MockBean private UsuarioService usuarioService;
+  @MockBean private UsuarioRequestConverter usuarioRequestConverter;
   private MockMvc mvc;
 
   @BeforeEach
@@ -51,15 +49,21 @@ class UsuarioControllerTest {
   void getByLoginTest() throws Exception {
     BDDMockito.given(usuarioService.findByUsername(MOCK_LOGIN))
         .willReturn(Optional.ofNullable(Usuario.builder().build()));
-    mvc.perform(MockMvcRequestBuilders.get("/usuarios").param(PARAM_LOGIN, MOCK_LOGIN)
-        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    mvc.perform(
+            MockMvcRequestBuilders.get("/usuarios")
+                .param(PARAM_LOGIN, MOCK_LOGIN)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
   }
 
   @Test
   void getByLoginNotFoundTest() throws Exception {
     BDDMockito.given(usuarioService.findByUsername(MOCK_LOGIN)).willReturn(Optional.empty());
-    mvc.perform(MockMvcRequestBuilders.get("/usuarios").param(PARAM_LOGIN, MOCK_LOGIN)
-        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+    mvc.perform(
+            MockMvcRequestBuilders.get("/usuarios")
+                .param(PARAM_LOGIN, MOCK_LOGIN)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound());
   }
 
   @Test
@@ -67,7 +71,8 @@ class UsuarioControllerTest {
     BDDMockito.given(usuarioService.findByCodigoUsuario(MOCK_CODE))
         .willReturn(Optional.ofNullable(Usuario.builder().build()));
     mvc.perform(
-        MockMvcRequestBuilders.get(URL_REQUEST, MOCK_CODE).contentType(MediaType.APPLICATION_JSON))
+            MockMvcRequestBuilders.get(URL_REQUEST, MOCK_CODE)
+                .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
   }
 
@@ -75,12 +80,17 @@ class UsuarioControllerTest {
   void getNotFoundTest() throws Exception {
     BDDMockito.given(usuarioService.findByCodigoUsuario(MOCK_CODE)).willReturn(Optional.empty());
     mvc.perform(
-        MockMvcRequestBuilders.get(URL_REQUEST, MOCK_CODE).contentType(MediaType.APPLICATION_JSON))
+            MockMvcRequestBuilders.get(URL_REQUEST, MOCK_CODE)
+                .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound());
   }
 
-  private UsuarioRequest createUsuarioRequest(String primerNombre, String primerApellido,
-      String username, String password, String passAgain) {
+  private UsuarioRequest createUsuarioRequest(
+      String primerNombre,
+      String primerApellido,
+      String username,
+      String password,
+      String passAgain) {
     UsuarioRequest request = new UsuarioRequest();
     request.setPrimerNombre(primerNombre);
     request.setPrimerApellido(primerApellido);
@@ -102,15 +112,24 @@ class UsuarioControllerTest {
   void updateTest() throws Exception {
     BDDMockito.given(usuarioService.findByCodigoUsuario(MOCK_CODE))
         .willReturn(Optional.ofNullable(Usuario.builder().build()));
-    Usuario user = Usuario.builder().codigoUsuario(MOCK_CODE).primerNombre(MOCK_FIRST_NAME)
-        .primerApellido(MOCK_LAST_NAME).build();
-    BDDMockito.doReturn(user).when(usuarioRequestConverter)
+    Usuario user =
+        Usuario.builder()
+            .codigoUsuario(MOCK_CODE)
+            .primerNombre(MOCK_FIRST_NAME)
+            .primerApellido(MOCK_LAST_NAME)
+            .build();
+    BDDMockito.doReturn(user)
+        .when(usuarioRequestConverter)
         .convert(BDDMockito.any(UsuarioRequest.class));
     BDDMockito.doReturn(user).when(usuarioService).update(BDDMockito.any(Usuario.class));
-    mvc.perform(MockMvcRequestBuilders.put(URL_REQUEST, MOCK_CODE)
-        .content(asJsonString(createUsuarioRequest(MOCK_FIRST_NAME, MOCK_LAST_NAME, MOCK_USERNAME,
-            MOCK_PWD, MOCK_PWD)))
-        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+    mvc.perform(
+            MockMvcRequestBuilders.put(URL_REQUEST, MOCK_CODE)
+                .content(
+                    asJsonString(
+                        createUsuarioRequest(
+                            MOCK_FIRST_NAME, MOCK_LAST_NAME, MOCK_USERNAME, MOCK_PWD, MOCK_PWD)))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
         .andExpect(jsonPath("$.primerNombre", Matchers.notNullValue()))
         .andExpect(jsonPath("$.primerNombre", is(MOCK_FIRST_NAME)));
   }
@@ -120,22 +139,31 @@ class UsuarioControllerTest {
     BDDMockito.given(usuarioService.findByCodigoUsuario(MOCK_CODE))
         .willReturn(Optional.ofNullable(Usuario.builder().build()));
     Usuario user = Usuario.builder().build();
-    BDDMockito.doReturn(user).when(usuarioRequestConverter)
+    BDDMockito.doReturn(user)
+        .when(usuarioRequestConverter)
         .convert(BDDMockito.any(UsuarioRequest.class));
     BDDMockito.doReturn(null).when(usuarioService).update(BDDMockito.any(Usuario.class));
-    mvc.perform(MockMvcRequestBuilders.put(URL_REQUEST, MOCK_CODE)
-        .content(asJsonString(createUsuarioRequest(MOCK_FIRST_NAME, MOCK_LAST_NAME, MOCK_USERNAME,
-            MOCK_PWD, MOCK_PWD)))
-        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotModified());
+    mvc.perform(
+            MockMvcRequestBuilders.put(URL_REQUEST, MOCK_CODE)
+                .content(
+                    asJsonString(
+                        createUsuarioRequest(
+                            MOCK_FIRST_NAME, MOCK_LAST_NAME, MOCK_USERNAME, MOCK_PWD, MOCK_PWD)))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotModified());
   }
 
   @Test
   void updateNotFoundTest() throws Exception {
     BDDMockito.given(usuarioService.findByCodigoUsuario(MOCK_CODE)).willReturn(Optional.empty());
-    mvc.perform(MockMvcRequestBuilders.put(URL_REQUEST, MOCK_CODE)
-        .content(asJsonString(createUsuarioRequest(MOCK_FIRST_NAME, MOCK_LAST_NAME, MOCK_USERNAME,
-            MOCK_PWD, MOCK_PWD)))
-        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+    mvc.perform(
+            MockMvcRequestBuilders.put(URL_REQUEST, MOCK_CODE)
+                .content(
+                    asJsonString(
+                        createUsuarioRequest(
+                            MOCK_FIRST_NAME, MOCK_LAST_NAME, MOCK_USERNAME, MOCK_PWD, MOCK_PWD)))
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound());
   }
 
   @Test
@@ -143,14 +171,18 @@ class UsuarioControllerTest {
     BDDMockito.given(usuarioService.findByCodigoUsuario(MOCK_CODE))
         .willReturn(Optional.ofNullable(Usuario.builder().build()));
     BDDMockito.doNothing().when(usuarioService).delete(MOCK_CODE);
-    mvc.perform(MockMvcRequestBuilders.delete(URL_REQUEST, MOCK_CODE)
-        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNoContent());
+    mvc.perform(
+            MockMvcRequestBuilders.delete(URL_REQUEST, MOCK_CODE)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNoContent());
   }
 
   @Test
   void deleteNotFoundTest() throws Exception {
     BDDMockito.given(usuarioService.findByCodigoUsuario(MOCK_CODE)).willReturn(Optional.empty());
-    mvc.perform(MockMvcRequestBuilders.delete(URL_REQUEST, MOCK_CODE)
-        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+    mvc.perform(
+            MockMvcRequestBuilders.delete(URL_REQUEST, MOCK_CODE)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound());
   }
 }

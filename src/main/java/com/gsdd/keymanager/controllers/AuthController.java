@@ -1,5 +1,12 @@
 package com.gsdd.keymanager.controllers;
 
+import com.gsdd.keymanager.components.JWTUtil;
+import com.gsdd.keymanager.requests.AuthRequest;
+import com.gsdd.keymanager.responses.AuthResponse;
+import com.gsdd.keymanager.services.KMUserDetailsService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,16 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.gsdd.keymanager.components.JWTUtil;
-import com.gsdd.keymanager.requests.AuthRequest;
-import com.gsdd.keymanager.responses.AuthResponse;
-import com.gsdd.keymanager.services.KMUserDetailsService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
 
+@Tag(name = "Auth operations")
 @RequiredArgsConstructor
-@Api("Auth")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -29,13 +29,13 @@ public class AuthController {
   private final KMUserDetailsService userDetailsService;
   private final JWTUtil jwtUtil;
 
-  @ApiOperation(value = "Permite autenticar a un usuario.")
+  @Operation(summary = "Permite autenticar a un usuario.")
   @GetMapping("/login")
   public ResponseEntity<?> basicAuth() {
     return ResponseEntity.status(HttpStatus.OK).body("Autenticado");
   }
 
-  @ApiOperation(value = "Permite autenticar a un usuario.")
+  @Operation(summary = "Permite autenticar a un usuario.")
   @PostMapping("/login")
   public ResponseEntity<AuthResponse> createToken(@RequestBody AuthRequest request) {
     try {

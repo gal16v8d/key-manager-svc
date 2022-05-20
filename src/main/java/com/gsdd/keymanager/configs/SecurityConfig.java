@@ -1,5 +1,8 @@
 package com.gsdd.keymanager.configs;
 
+import com.gsdd.keymanager.components.JwtFilterReq;
+import com.gsdd.keymanager.services.KMUserDetailsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,9 +16,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import com.gsdd.keymanager.components.JwtFilterReq;
-import com.gsdd.keymanager.services.KMUserDetailsService;
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Configuration
@@ -43,8 +43,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable().authorizeRequests().antMatchers("/**/login").permitAll().anyRequest()
-        .authenticated().and().httpBasic().and().sessionManagement()
+    http.csrf()
+        .disable()
+        .authorizeRequests()
+        .antMatchers("/**/login")
+        .permitAll()
+        .anyRequest()
+        .authenticated()
+        .and()
+        .httpBasic()
+        .and()
+        .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     http.addFilterBefore(jwtFilterReq, UsernamePasswordAuthenticationFilter.class);
   }
@@ -54,5 +63,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   public AuthenticationManager authenticationManagerBean() throws Exception {
     return super.authenticationManagerBean();
   }
-
 }

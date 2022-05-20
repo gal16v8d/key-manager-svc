@@ -1,5 +1,7 @@
 package com.gsdd.keymanager.services;
 
+import com.gsdd.keymanager.entities.Usuario;
+import com.gsdd.keymanager.repositories.UsuarioRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,8 +10,6 @@ import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import com.gsdd.keymanager.entities.Usuario;
-import com.gsdd.keymanager.repositories.UsuarioRepository;
 
 @ExtendWith(SpringExtension.class)
 class UsuarioServiceTest {
@@ -18,8 +18,7 @@ class UsuarioServiceTest {
   private static final String MOCK_PWD = "123456";
 
   private UsuarioService usuarioService;
-  @Mock
-  private UsuarioRepository usuarioRepository;
+  @Mock private UsuarioRepository usuarioRepository;
 
   @BeforeEach
   void setUp() {
@@ -41,22 +40,19 @@ class UsuarioServiceTest {
 
   @Test
   void givenUserNotFoundThenfindByUsernameAndPasswordReturnTest() {
-    BDDMockito
-        .given(
+    BDDMockito.given(
             usuarioRepository.findByUsernameAndPassword(Mockito.anyString(), Mockito.anyString()))
         .willReturn(null);
-    Assertions
-        .assertFalse(usuarioService.findByUsernameAndPassword(MOCK_USERNAME, MOCK_PWD).isPresent());
+    Assertions.assertFalse(
+        usuarioService.findByUsernameAndPassword(MOCK_USERNAME, MOCK_PWD).isPresent());
   }
 
   @Test
   void givenUserFoundThenfindByUsernameAndPasswordReturnTest() {
-    BDDMockito
-        .given(
+    BDDMockito.given(
             usuarioRepository.findByUsernameAndPassword(Mockito.anyString(), Mockito.anyString()))
         .willReturn(Usuario.builder().build());
-    Assertions
-        .assertTrue(usuarioService.findByUsernameAndPassword(MOCK_USERNAME, MOCK_PWD).isPresent());
+    Assertions.assertTrue(
+        usuarioService.findByUsernameAndPassword(MOCK_USERNAME, MOCK_PWD).isPresent());
   }
-
 }

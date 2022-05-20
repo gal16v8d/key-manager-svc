@@ -7,5 +7,4 @@ public class ContrasenaException extends RuntimeException {
   public ContrasenaException(String msg) {
     super(msg);
   }
-
 }
