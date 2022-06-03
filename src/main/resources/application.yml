@@ -1,0 +1,16 @@
+server:
+  port: 8095
+spring:
+  datasource:
+    url: jdbc:derby:./kmgr/kmgr.DB;create=true
+    username: app
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.DerbyTenSevenDialect
+        show_sql: true
