@@ -34,25 +34,29 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @Table(
-    name = "cuentaxusuario",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"codigoUsuario", "nombreCuenta"}))
-public class CuentaXUsuario implements Serializable {
+    name = "account_login",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"account_id", "account_name"}))
+public class AccountLogin implements Serializable {
 
   private static final long serialVersionUID = -5799982073302238435L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long codigoCuenta;
+  private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "codigoUsuario", nullable = false)
-  private Usuario usuario;
+  @JoinColumn(name = "account_id", nullable = false)
+  private Account account;
 
-  @Column(name = "nombreCuenta", nullable = false, length = 64)
-  private String nombreCuenta;
+  @Column(name = "account_name", nullable = false, length = 64)
+  private String accountName;
+  
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "type_id", nullable = true)
+  private AccountType accountType;
 
-  @Column(name = "username", nullable = false, length = 64)
-  private String username;
+  @Column(name = "login", nullable = false, length = 64)
+  private String login;
 
   @Column(name = "password", nullable = false, length = 128)
   private String password;
@@ -61,6 +65,7 @@ public class CuentaXUsuario implements Serializable {
   private String url;
 
   @Temporal(TemporalType.DATE)
-  @Column(name = "fecha", nullable = false)
-  private Date fecha;
+  @Column(name = "modification_date", nullable = false)
+  private Date modificationDate;
+  
 }

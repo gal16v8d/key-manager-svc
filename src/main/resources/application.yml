@@ -1,3 +1,7 @@
+kmgr:
+  http:
+    apiKey: ${KMGR_API_KEY}
+
 server:
   port: 8095
 spring:

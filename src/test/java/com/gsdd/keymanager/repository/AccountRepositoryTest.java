@@ -1,7 +1,7 @@
 package com.gsdd.keymanager.repository;
 
-import com.gsdd.keymanager.entities.Usuario;
-import com.gsdd.keymanager.repositories.UsuarioRepository;
+import com.gsdd.keymanager.entities.Account;
+import com.gsdd.keymanager.repositories.AccountRepository;
 import javax.persistence.PersistenceException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,23 +10,23 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 @DataJpaTest
-class UsuarioRepositoryTest {
+class AccountRepositoryTest {
 
   @Autowired private TestEntityManager entityManager;
-  @Autowired private UsuarioRepository usuarioRepository;
+  @Autowired private AccountRepository accountRepository;
 
   @Test
-  void ifPrimerNombreIsLongThenFailTest() {
-    Usuario user =
-        Usuario.builder()
-            .primerNombre("Abcdefghijklmnopq")
-            .primerApellido("test")
-            .codigoUsuario(1L)
+  void ifFirstNombreIsLongThenFailTest() {
+    Account account =
+        Account.builder()
+            .firstName("Abcdefghijklmnopq")
+            .lastName("test")
+            .accountId(1L)
             .password("test")
-            .username("agalvis")
-            .rol(null)
+            .login("agalvis")
+            .role(null)
             .build();
-    usuarioRepository.save(user);
+    accountRepository.save(account);
     Assertions.assertThrows(PersistenceException.class, () -> entityManager.flush());
   }
 }

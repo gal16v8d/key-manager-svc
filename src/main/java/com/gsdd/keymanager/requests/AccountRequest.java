@@ -2,6 +2,7 @@ package com.gsdd.keymanager.requests;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Generated;
 
@@ -12,14 +13,15 @@ import lombok.Generated;
  * @version 1.0
  */
 @Generated
+@Builder
 @Data
-@Schema(description = "Propiedades base para crear un usuario.")
-public class UsuarioRequest implements Serializable {
+@Schema(description = "Basic properties to create an account.")
+public class AccountRequest implements Serializable {
 
   private static final long serialVersionUID = 4543485518965788215L;
-  private String primerNombre;
-  private String primerApellido;
-  private String username;
+  private String firstName;
+  private String lastName;
+  private String login;
   private String password;
   private String passwordAgain;
 }

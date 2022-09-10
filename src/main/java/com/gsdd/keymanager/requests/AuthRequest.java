@@ -1,14 +1,19 @@
 package com.gsdd.keymanager.requests;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Generated;
 
 @Generated
+@Builder
 @Data
-@Schema(description = "Propiedades base para autenticarse en el app.")
+@Schema(description = "Required props to login in app.")
 public class AuthRequest {
 
-  private String username;
+  @NotBlank(message = "Login is required.")
+  private String login;
+  @NotBlank(message = "Password is required.")
   private String password;
 }

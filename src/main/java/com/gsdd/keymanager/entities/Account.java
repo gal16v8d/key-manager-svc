@@ -26,27 +26,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "usuario")
-public class Usuario implements Serializable {
+@Table(name = "account")
+public class Account implements Serializable {
 
   private static final long serialVersionUID = 2383390124298097984L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long codigoUsuario;
+  @Column(name = "account_id")
+  private Long accountId;
 
-  @Column(name = "primer_nombre", nullable = false, length = 16)
-  private String primerNombre;
+  @Column(name = "first_name", nullable = false, length = 16)
+  private String firstName;
 
-  @Column(name = "primer_apellido", nullable = false, length = 16)
-  private String primerApellido;
+  @Column(name = "last_name", nullable = false, length = 16)
+  private String lastName;
 
-  @Column(name = "username", unique = true, nullable = false, length = 64)
-  private String username;
+  @Column(name = "login", unique = true, nullable = false, length = 64)
+  private String login;
 
   @Column(name = "password", nullable = false, length = 128)
   private String password;
 
-  @Column(name = "rol", nullable = false)
-  private Long rol;
+  @Column(name = "role", nullable = false)
+  private Long role;
 }
