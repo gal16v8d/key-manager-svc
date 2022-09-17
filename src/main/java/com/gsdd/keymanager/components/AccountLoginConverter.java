@@ -15,7 +15,7 @@ public class AccountLoginConverter implements Converter<AccountLogin, AccountLog
     return Optional.ofNullable(source)
         .map(data -> AccountLoginRequest.builder().accountName(source.getAccountName())
             .url(source.getUrl()).login(source.getLogin())
-            .password(KmgrCypher.decypher(source.getPassword()))
+            .password(KmgrCypher.DECYPHER.apply(source.getPassword()))
             .userLogin(data.getLogin()).build())
         .orElse(null);
   }

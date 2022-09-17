@@ -37,7 +37,7 @@ public class AuthController {
       return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
     }
     return accountService
-        .findByLoginAndPassword(request.getLogin(), KmgrCypher.cypher(request.getPassword()))
+        .findByLoginAndPassword(request.getLogin(), KmgrCypher.CYPHER.apply(request.getPassword()))
         .map(account -> ResponseEntity.ok(AuthResponse.builder().token(secureKey).build()))
         .orElseThrow(() -> new PasswordException("User or password incorrect"));
   }

@@ -18,7 +18,7 @@ public class AccountConverter implements Converter<AccountRequest, Account> {
     if (requestOp.isPresent()) {
       if (Objects.equals(source.getPassword(), source.getPasswordAgain())) {
         return Account.builder().firstName(source.getFirstName()).lastName(source.getLastName())
-            .login(source.getLogin()).password(KmgrCypher.cypher(source.getPassword()))
+            .login(source.getLogin()).password(KmgrCypher.CYPHER.apply(source.getPassword()))
             .build();
       }
       throw new PasswordException("Password doesn't match, please verify");
