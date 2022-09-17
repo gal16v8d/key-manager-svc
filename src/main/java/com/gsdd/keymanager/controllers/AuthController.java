@@ -25,18 +25,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
   private final AccountService accountService;
+
   @Value("${kmgr.http.apiKey}")
   private String secureKey;
 
   @Operation(summary = "Auth user in app.")
   @PostMapping("/login")
-  public ResponseEntity<?> createToken(@RequestBody @Valid AuthRequest request, BindingResult bindingResult) {
+  public ResponseEntity<?> createToken(
+      @RequestBody @Valid AuthRequest request, BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
       return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
     }
     return accountService
         .findByLoginAndPassword(request.getLogin(), KmgrCypher.cypher(request.getPassword()))
         .map(account -> ResponseEntity.ok(AuthResponse.builder().token(secureKey).build()))
-        .orElseThrow(() -> new PasswordException(""));
+        .orElseThrow(() -> new PasswordException("User or password incorrect"));
   }
 }

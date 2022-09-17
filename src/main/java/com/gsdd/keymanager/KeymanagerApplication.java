@@ -9,21 +9,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.Ordered;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @SpringBootApplication
-@ComponentScan({
-  KeymanagerApplication.COMPONENT,
-  KeymanagerApplication.COMPONENT,
-  KeymanagerApplication.CONFIG,
-  KeymanagerApplication.CONTROLLER,
-  KeymanagerApplication.REPO,
-  KeymanagerApplication.SERVICES
-})
 @OpenAPIDefinition(
     info =
         @Info(
@@ -33,23 +24,9 @@ import org.springframework.web.filter.CorsFilter;
             contact = @Contact(email = "alex.galvis.sistemas@gmail.com")))
 public class KeymanagerApplication {
 
-  public static final String BASE = "com.gsdd.keymanager";
-  public static final String COMPONENT = BASE + ".components";
-  public static final String CONFIG = BASE + ".configs";
-  public static final String CONTROLLER = BASE + ".controllers";
-  public static final String REPO = BASE + ".repositories";
-  public static final String SERVICES = BASE + ".services";
-
   public static void main(String[] args) {
     SpringApplication.run(KeymanagerApplication.class, args);
   }
-
-  /*
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
-  */
 
   @Bean
   public FilterRegistrationBean<CorsFilter> simpleCorsFilter() {

@@ -18,4 +18,5 @@
 	<suppress checks="MagicNumber" files=".*\.java" />
 	<suppress checks="WhitespaceAround" files=".*\.java" />
 	<suppress checks="JavadocMethod" files=".*\.java" />
+	<suppress checks="RegexpSingleline" files=".*\.java" />
 </suppressions>
