@@ -13,7 +13,17 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 public class HeaderInterceptor implements HandlerInterceptor {
 
-  private static final List<String> SAFE_LIST = List.of("/actuator", "/health", "/auth");
+  private static final List<String> SAFE_LIST = List.of(
+      "/actuator",
+      "/health",
+      "/auth",
+      "/error",
+      "/favicon.ico",
+      "/swagger-ui/",
+      "/swagger-resources/",
+      "/v3/api-docs",
+      "/v3/api-docs/",
+      "/webjars/");
   @Value("${kmgr.http.apiKey}")
   private String apiKey;
 
@@ -26,7 +36,7 @@ public class HeaderInterceptor implements HandlerInterceptor {
     }
     return true;
   }
-  
+
   void checkSecurityHeader(HttpServletRequest request) {
     if (StringUtils.isBlank(request.getHeader(HttpHeaders.AUTHORIZATION))) {
       throw new MissingHeaderException("Missing header: %s".formatted(HttpHeaders.AUTHORIZATION));

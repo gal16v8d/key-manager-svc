@@ -1,10 +1,12 @@
 package com.gsdd.keymanager.controllers;
 
+import com.gsdd.keymanager.KeymanagerApplication;
 import com.gsdd.keymanager.components.AccountConverter;
 import com.gsdd.keymanager.entities.Account;
 import com.gsdd.keymanager.requests.AccountRequest;
 import com.gsdd.keymanager.services.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@SecurityRequirement(name = KeymanagerApplication.SECURITY_SCHEMA_ID)
 @Tag(name = "Account CRUD")
 @RequiredArgsConstructor
 @RestController

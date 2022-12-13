@@ -1,8 +1,11 @@
 package com.gsdd.keymanager;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import java.util.Arrays;
 import java.util.Collections;
 import org.springframework.boot.SpringApplication;
@@ -15,14 +18,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @SpringBootApplication
-@OpenAPIDefinition(
-    info =
-        @Info(
-            title = "KeyManager API",
-            version = "2.0",
-            description = "REST with Spring-Boot & Derby",
-            contact = @Contact(email = "alex.galvis.sistemas@gmail.com")))
+@OpenAPIDefinition(info = @Info(title = "KeyManager API", version = "2.0",
+    description = "REST with Spring-Boot & Derby",
+    contact = @Contact(email = "alex.galvis.sistemas@gmail.com")))
+@SecurityScheme(name = KeymanagerApplication.SECURITY_SCHEMA_ID, type = SecuritySchemeType.APIKEY,
+    scheme = "basic", in = SecuritySchemeIn.HEADER)
 public class KeymanagerApplication {
+
+  public static final String SECURITY_SCHEMA_ID = "Kmgr-Svc";
 
   public static void main(String[] args) {
     SpringApplication.run(KeymanagerApplication.class, args);
