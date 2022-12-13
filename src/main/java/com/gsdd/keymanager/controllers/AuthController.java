@@ -34,7 +34,7 @@ public class AuthController {
   public ResponseEntity<?> createToken(@RequestBody @Valid AuthRequest request,
       BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
-      return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+      return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
     }
     return accountService
         .findByLoginAndPassword(request.getLogin(), KmgrCypher.CYPHER.apply(request.getPassword()))

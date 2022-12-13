@@ -57,7 +57,7 @@ public class AccountLoginController {
       @PathVariable("accountId") Long accountId) {
     return findByLoginAndAccountId(login, accountId).map(accountLoginConverter::convert)
         .map(ResponseEntity::ok)
-        .orElseGet(() -> ResponseEntity.notFound().build());
+        .orElseGet(ResponseEntity.notFound()::build);
   }
 
   @Operation(summary = "Get all the associated accounts using the login.")
@@ -66,7 +66,7 @@ public class AccountLoginController {
     return accountService.findByLogin(login)
         .map(accountLoginService::findByAccount)
         .map(ResponseEntity::ok)
-        .orElseGet(() -> ResponseEntity.notFound().build());
+        .orElseGet(ResponseEntity.notFound()::build);
   }
 
   @Operation(summary = "Creates an account.")
@@ -74,16 +74,16 @@ public class AccountLoginController {
   public ResponseEntity<?> save(@PathVariable("login") String login,
       @Valid @RequestBody AccountLoginRequest request, BindingResult bResultado) {
     if (bResultado.hasErrors()) {
-      return new ResponseEntity<>(bResultado.getAllErrors(), HttpStatus.BAD_REQUEST);
+      return ResponseEntity.badRequest().body(bResultado.getAllErrors());
     }
     if (!accountService.findByLogin(login).isPresent()) {
-      return new ResponseEntity<>("Usuario no válido", HttpStatus.BAD_REQUEST);
+      return ResponseEntity.badRequest().body("Usuario no válido");
     }
     AccountLogin accountLogin =
         accountLoginService.save(accountLoginRequestConverter.convert(request));
     return Optional.ofNullable(accountLogin)
-        .map(dto -> ResponseEntity.status(HttpStatus.CREATED).body(dto))
-        .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+        .map(ResponseEntity.status(HttpStatus.CREATED)::body)
+        .orElseGet(ResponseEntity.internalServerError()::build);
   }
 
   @Operation(summary = "Updates an account.")
@@ -92,7 +92,7 @@ public class AccountLoginController {
       @PathVariable("accountId") Long accountId, @Valid @RequestBody AccountLoginRequest request,
       BindingResult bResultado) {
     if (bResultado.hasErrors()) {
-      return new ResponseEntity<>(bResultado.getAllErrors(), HttpStatus.BAD_REQUEST);
+      return ResponseEntity.badRequest().body(bResultado.getAllErrors());
     }
     Optional<AccountLogin> accountLoginOptional = findByLoginAndAccountId(login, accountId);
     if (accountLoginOptional.isPresent()) {
@@ -102,7 +102,7 @@ public class AccountLoginController {
       AccountLogin updatedAccount = accountLoginService.update(accountLogin);
       return Optional.ofNullable(updatedAccount)
           .map(ResponseEntity::ok)
-          .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_MODIFIED).build());
+          .orElseGet(ResponseEntity.status(HttpStatus.NOT_MODIFIED)::build);
     } else {
       return getNotFoundResponse();
     }

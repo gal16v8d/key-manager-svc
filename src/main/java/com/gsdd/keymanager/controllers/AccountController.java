@@ -42,7 +42,7 @@ public class AccountController {
   public ResponseEntity<Account> getByLogin(@PathVariable("login") String login) {
     return accountService.findByLogin(login)
         .map(ResponseEntity::ok)
-        .orElseGet(() -> ResponseEntity.notFound().build());
+        .orElseGet(ResponseEntity.notFound()::build);
   }
 
   @Operation(summary = "Store user account data.")
@@ -50,12 +50,12 @@ public class AccountController {
   public ResponseEntity<?> save(@Valid @RequestBody AccountRequest request,
       BindingResult bResultado) {
     if (bResultado.hasErrors()) {
-      return new ResponseEntity<>(bResultado.getAllErrors(), HttpStatus.BAD_REQUEST);
+      return ResponseEntity.badRequest().body(bResultado.getAllErrors());
     }
     Account account = accountService.save(accountConverter.convert(request));
     return Optional.ofNullable(account)
-        .map(dto -> ResponseEntity.status(HttpStatus.CREATED).body(dto))
-        .orElseGet(() -> ResponseEntity.internalServerError().build());
+        .map(ResponseEntity.status(HttpStatus.CREATED)::body)
+        .orElseGet(ResponseEntity.internalServerError()::build);
   }
 
   @Operation(summary = "Update user account data.")
@@ -63,7 +63,7 @@ public class AccountController {
   public ResponseEntity<?> update(@PathVariable("id") Long id,
       @Valid @RequestBody AccountRequest request, BindingResult bResultado) {
     if (bResultado.hasErrors()) {
-      return new ResponseEntity<>(bResultado.getAllErrors(), HttpStatus.BAD_REQUEST);
+      return ResponseEntity.badRequest().body(bResultado.getAllErrors());
     }
 
     return findById(id).map((Account data) -> {
@@ -72,8 +72,8 @@ public class AccountController {
       Account accountUpdated = accountService.update(account);
       return Optional.ofNullable(accountUpdated)
           .map(ResponseEntity::ok)
-          .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_MODIFIED).build());
-    }).orElseGet(() -> ResponseEntity.notFound().build());
+          .orElseGet(ResponseEntity.status(HttpStatus.NOT_MODIFIED)::build);
+    }).orElseGet(ResponseEntity.notFound()::build);
   }
 
   @Operation(summary = "Delete user account data.")
@@ -82,6 +82,6 @@ public class AccountController {
     return findById(id).map((Account a) -> {
       accountService.delete(id);
       return ResponseEntity.noContent().build();
-    }).orElseGet(() -> ResponseEntity.notFound().build());
+    }).orElseGet(ResponseEntity.notFound()::build);
   }
 }
