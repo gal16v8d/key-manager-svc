@@ -40,16 +40,15 @@ public class AccountController {
   @Operation(summary = "Get user data using the login.")
   @GetMapping("/{login}")
   public ResponseEntity<Account> getByLogin(@PathVariable("login") String login) {
-    return accountService
-        .findByLogin(login)
+    return accountService.findByLogin(login)
         .map(ResponseEntity::ok)
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @Operation(summary = "Store user account data.")
   @PostMapping
-  public ResponseEntity<?> save(
-      @Valid @RequestBody AccountRequest request, BindingResult bResultado) {
+  public ResponseEntity<?> save(@Valid @RequestBody AccountRequest request,
+      BindingResult bResultado) {
     if (bResultado.hasErrors()) {
       return new ResponseEntity<>(bResultado.getAllErrors(), HttpStatus.BAD_REQUEST);
     }
@@ -61,14 +60,12 @@ public class AccountController {
 
   @Operation(summary = "Update user account data.")
   @PutMapping("/{id}")
-  public ResponseEntity<?> update(
-      @PathVariable("id") Long id,
-      @Valid @RequestBody AccountRequest request,
-      BindingResult bResultado) {
+  public ResponseEntity<?> update(@PathVariable("id") Long id,
+      @Valid @RequestBody AccountRequest request, BindingResult bResultado) {
     if (bResultado.hasErrors()) {
       return new ResponseEntity<>(bResultado.getAllErrors(), HttpStatus.BAD_REQUEST);
     }
-    
+
     return findById(id).map((Account data) -> {
       Account account = accountConverter.convert(request);
       account.setAccountId(id);
@@ -82,12 +79,9 @@ public class AccountController {
   @Operation(summary = "Delete user account data.")
   @DeleteMapping("/{id}")
   public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
-    return findById(id)
-        .map(
-            (Account a) -> {
-              accountService.delete(id);
-              return ResponseEntity.noContent().build();
-            })
-        .orElseGet(() -> ResponseEntity.notFound().build());
+    return findById(id).map((Account a) -> {
+      accountService.delete(id);
+      return ResponseEntity.noContent().build();
+    }).orElseGet(() -> ResponseEntity.notFound().build());
   }
 }

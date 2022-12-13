@@ -31,8 +31,8 @@ public class AuthController {
 
   @Operation(summary = "Auth user in app.")
   @PostMapping("/login")
-  public ResponseEntity<?> createToken(
-      @RequestBody @Valid AuthRequest request, BindingResult bindingResult) {
+  public ResponseEntity<?> createToken(@RequestBody @Valid AuthRequest request,
+      BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
       return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
     }

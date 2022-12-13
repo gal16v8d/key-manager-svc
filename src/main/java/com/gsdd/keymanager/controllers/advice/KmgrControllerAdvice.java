@@ -13,13 +13,13 @@ import org.springframework.web.context.request.WebRequest;
 @Slf4j
 @ControllerAdvice
 public class KmgrControllerAdvice {
-  
+
   @ExceptionHandler({MissingHeaderException.class, PasswordException.class})
   public ResponseEntity<Object> badPasswordHandler(Exception e, WebRequest request) {
     log.warn("Error while consuming endpoint {}", request, e);
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("detail", e.getMessage()));
   }
-  
+
   @ExceptionHandler({Exception.class})
   public ResponseEntity<Object> defaultHandler(Exception e, WebRequest request) {
     log.warn("Error while consuming endpoint {}", request, e);

@@ -9,9 +9,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Component
 @RequiredArgsConstructor
 public class InterceptorConfig implements WebMvcConfigurer {
-  
+
   private final HeaderInterceptor headerInterceptor;
-  
+
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
     registry.addInterceptor(headerInterceptor);

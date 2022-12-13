@@ -12,20 +12,21 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 @DataJpaTest
 class AccountRepositoryTest {
 
-  @Autowired private TestEntityManager entityManager;
-  @Autowired private AccountRepository accountRepository;
+  @Autowired
+  private TestEntityManager entityManager;
+  @Autowired
+  private AccountRepository accountRepository;
 
   @Test
   void ifFirstNombreIsLongThenFailTest() {
-    Account account =
-        Account.builder()
-            .firstName("Abcdefghijklmnopq")
-            .lastName("test")
-            .accountId(1L)
-            .password("test")
-            .login("agalvis")
-            .role(null)
-            .build();
+    Account account = Account.builder()
+        .firstName("Abcdefghijklmnopq")
+        .lastName("test")
+        .accountId(1L)
+        .password("test")
+        .login("agalvis")
+        .role(null)
+        .build();
     accountRepository.save(account);
     Assertions.assertThrows(PersistenceException.class, () -> entityManager.flush());
   }

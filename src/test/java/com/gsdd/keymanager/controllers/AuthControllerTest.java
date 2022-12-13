@@ -20,20 +20,20 @@ import org.springframework.test.web.servlet.MockMvc;
 class AuthControllerTest {
 
   private static final String API_PATH = "/auth/login";
-  private static final String MOCK_AUTH_BODY =
-      """
+  private static final String MOCK_AUTH_BODY = """
       {
         "login": "actor",
         "password": "L123$"
       }
       """;
-  @Autowired private MockMvc mvc;
-  @MockBean private AccountService accountService;
+  @Autowired
+  private MockMvc mvc;
+  @MockBean
+  private AccountService accountService;
 
   @Test
   void testCreateToken() throws Exception {
-    willReturn(Optional.ofNullable(Account.builder().build()))
-        .given(accountService)
+    willReturn(Optional.ofNullable(Account.builder().build())).given(accountService)
         .findByLoginAndPassword(any(), any());
     mvc.perform(post(API_PATH).contentType(MediaType.APPLICATION_JSON).content(MOCK_AUTH_BODY))
         .andExpect(status().isOk())

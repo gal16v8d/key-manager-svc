@@ -12,17 +12,25 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class AccountLoginRequestConverter
-    implements Converter<AccountLoginRequest, AccountLogin> {
+public class AccountLoginRequestConverter implements Converter<AccountLoginRequest, AccountLogin> {
 
   private final AccountService accountService;
 
   @Override
   public AccountLogin convert(AccountLoginRequest source) {
-    return Optional.ofNullable(source).map(data -> accountService.findByLogin(source.getUserLogin())
-        .map(account -> AccountLogin.builder().account(account).accountName(source.getAccountName())
-            .url(source.getUrl()).login(account.getLogin()).password(account.getPassword())
-            .modificationDate(Date.from(Instant.now())).build())
-        .orElse(null)).orElse(null);
+    return Optional.ofNullable(source)
+        .map(
+            data -> accountService.findByLogin(source.getUserLogin())
+                .map(
+                    account -> AccountLogin.builder()
+                        .account(account)
+                        .accountName(source.getAccountName())
+                        .url(source.getUrl())
+                        .login(account.getLogin())
+                        .password(account.getPassword())
+                        .modificationDate(Date.from(Instant.now()))
+                        .build())
+                .orElse(null))
+        .orElse(null);
   }
 }

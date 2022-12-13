@@ -22,14 +22,14 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "account_type")
 public class AccountType implements Serializable {
-  
+
   private static final long serialVersionUID = 1255832430684376543L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "type_id")
   private Long typeId;
-  
+
   @Column(name = "name", unique = true, nullable = false, length = 64)
   private String name;
 

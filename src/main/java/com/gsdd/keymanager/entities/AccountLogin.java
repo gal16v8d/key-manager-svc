@@ -22,9 +22,8 @@ import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 /**
- * @author Great System Development Dynamic <GSDD> <br>
- *     Alexander Galvis Grisales <br>
- *     alex.galvis.sistemas@gmail.com <br>
+ * @author Great System Development Dynamic <GSDD> <br> Alexander Galvis
+ *         Grisales <br> alex.galvis.sistemas@gmail.com <br>
  * @version 1.0
  */
 @Generated
@@ -33,8 +32,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-@Table(
-    name = "account_login",
+@Table(name = "account_login",
     uniqueConstraints = @UniqueConstraint(columnNames = {"account_id", "account_name"}))
 public class AccountLogin implements Serializable {
 
@@ -50,7 +48,7 @@ public class AccountLogin implements Serializable {
 
   @Column(name = "account_name", nullable = false, length = 64)
   private String accountName;
-  
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "type_id", nullable = true)
   private AccountType accountType;
@@ -67,5 +65,5 @@ public class AccountLogin implements Serializable {
   @Temporal(TemporalType.DATE)
   @Column(name = "modification_date", nullable = false)
   private Date modificationDate;
-  
+
 }

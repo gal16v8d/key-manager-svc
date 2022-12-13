@@ -43,13 +43,16 @@ class AccountControllerTest {
   private static final String URL_REQUEST = "/api/accounts";
   private static final String URL_REQUEST_LOGIN = URL_REQUEST + "/{login}";
   private static final String URL_REQUEST_ID = URL_REQUEST + "/{id}";
-  @Autowired private WebApplicationContext context;
+  @Autowired
+  private WebApplicationContext context;
 
   @Value("${kmgr.http.apiKey}")
   private String apiKey;
 
-  @MockBean private AccountService accountService;
-  @MockBean private AccountConverter accountConverter;
+  @MockBean
+  private AccountService accountService;
+  @MockBean
+  private AccountConverter accountConverter;
   private MockMvc mvc;
 
   @BeforeEach
@@ -62,9 +65,8 @@ class AccountControllerTest {
     given(accountService.findByLogin(MOCK_LOGIN))
         .willReturn(Optional.ofNullable(Account.builder().build()));
     mvc.perform(
-            get(URL_REQUEST_LOGIN, MOCK_LOGIN)
-                .header(HttpHeaders.AUTHORIZATION, apiKey)
-                .contentType(MediaType.APPLICATION_JSON))
+        get(URL_REQUEST_LOGIN, MOCK_LOGIN).header(HttpHeaders.AUTHORIZATION, apiKey)
+            .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
   }
 
@@ -72,9 +74,8 @@ class AccountControllerTest {
   void testGetByLoginNotFound() throws Exception {
     given(accountService.findByLogin(MOCK_LOGIN)).willReturn(Optional.empty());
     mvc.perform(
-            get(URL_REQUEST_LOGIN, MOCK_LOGIN)
-                .header(HttpHeaders.AUTHORIZATION, apiKey)
-                .contentType(MediaType.APPLICATION_JSON))
+        get(URL_REQUEST_LOGIN, MOCK_LOGIN).header(HttpHeaders.AUTHORIZATION, apiKey)
+            .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound());
   }
 
@@ -100,19 +101,17 @@ class AccountControllerTest {
   void testUpdate() throws Exception {
     given(accountService.findById(MOCK_CODE))
         .willReturn(Optional.ofNullable(Account.builder().build()));
-    Account account =
-        Account.builder()
-            .accountId(MOCK_CODE)
-            .firstName(MOCK_FIRST_NAME)
-            .lastName(MOCK_LAST_NAME)
-            .build();
+    Account account = Account.builder()
+        .accountId(MOCK_CODE)
+        .firstName(MOCK_FIRST_NAME)
+        .lastName(MOCK_LAST_NAME)
+        .build();
     willReturn(account).given(accountConverter).convert(any(AccountRequest.class));
     willReturn(account).given(accountService).update(any(Account.class));
     mvc.perform(
-            put(URL_REQUEST_ID, MOCK_CODE)
-                .header(HttpHeaders.AUTHORIZATION, apiKey)
-                .content(asJsonString(createRequest()))
-                .contentType(MediaType.APPLICATION_JSON))
+        put(URL_REQUEST_ID, MOCK_CODE).header(HttpHeaders.AUTHORIZATION, apiKey)
+            .content(asJsonString(createRequest()))
+            .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.firstName", Matchers.notNullValue()))
         .andExpect(jsonPath("$.firstName", is(MOCK_FIRST_NAME)));
@@ -126,10 +125,9 @@ class AccountControllerTest {
     willReturn(account).given(accountConverter).convert(any(AccountRequest.class));
     willReturn(null).given(accountService).update(any(Account.class));
     mvc.perform(
-            put(URL_REQUEST_ID, MOCK_CODE)
-                .header(HttpHeaders.AUTHORIZATION, apiKey)
-                .content(asJsonString(createRequest()))
-                .contentType(MediaType.APPLICATION_JSON))
+        put(URL_REQUEST_ID, MOCK_CODE).header(HttpHeaders.AUTHORIZATION, apiKey)
+            .content(asJsonString(createRequest()))
+            .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotModified());
   }
 
@@ -137,10 +135,9 @@ class AccountControllerTest {
   void testUpdateNotFound() throws Exception {
     given(accountService.findById(MOCK_CODE)).willReturn(Optional.empty());
     mvc.perform(
-            put(URL_REQUEST_ID, MOCK_CODE)
-                .header(HttpHeaders.AUTHORIZATION, apiKey)
-                .content(asJsonString(createRequest()))
-                .contentType(MediaType.APPLICATION_JSON))
+        put(URL_REQUEST_ID, MOCK_CODE).header(HttpHeaders.AUTHORIZATION, apiKey)
+            .content(asJsonString(createRequest()))
+            .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound());
   }
 
@@ -150,9 +147,8 @@ class AccountControllerTest {
         .willReturn(Optional.ofNullable(Account.builder().build()));
     BDDMockito.doNothing().when(accountService).delete(MOCK_CODE);
     mvc.perform(
-            delete(URL_REQUEST_ID, MOCK_CODE)
-                .header(HttpHeaders.AUTHORIZATION, apiKey)
-                .contentType(MediaType.APPLICATION_JSON))
+        delete(URL_REQUEST_ID, MOCK_CODE).header(HttpHeaders.AUTHORIZATION, apiKey)
+            .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNoContent());
   }
 
@@ -160,9 +156,8 @@ class AccountControllerTest {
   void testDeleteNotFound() throws Exception {
     given(accountService.findById(MOCK_CODE)).willReturn(Optional.empty());
     mvc.perform(
-            delete(URL_REQUEST_ID, MOCK_CODE)
-                .header(HttpHeaders.AUTHORIZATION, apiKey)
-                .contentType(MediaType.APPLICATION_JSON))
+        delete(URL_REQUEST_ID, MOCK_CODE).header(HttpHeaders.AUTHORIZATION, apiKey)
+            .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound());
   }
 }

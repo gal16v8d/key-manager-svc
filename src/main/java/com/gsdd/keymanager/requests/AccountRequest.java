@@ -7,9 +7,8 @@ import lombok.Data;
 import lombok.Generated;
 
 /**
- * @author Great System Development Dynamic <GSDD> <br>
- *     Alexander Galvis Grisales <br>
- *     alex.galvis.sistemas@gmail.com <br>
+ * @author Great System Development Dynamic <GSDD> <br> Alexander Galvis
+ *         Grisales <br> alex.galvis.sistemas@gmail.com <br>
  * @version 1.0
  */
 @Generated

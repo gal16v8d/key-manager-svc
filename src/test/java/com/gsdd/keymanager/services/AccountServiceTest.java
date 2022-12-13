@@ -18,7 +18,8 @@ class AccountServiceTest {
   private static final String MOCK_PWD = "123456";
 
   private AccountService accountService;
-  @Mock private AccountRepository accountRepository;
+  @Mock
+  private AccountRepository accountRepository;
 
   @BeforeEach
   void setUp() {
@@ -40,19 +41,19 @@ class AccountServiceTest {
 
   @Test
   void givenUserNotFoundThenfindByUsernameAndPasswordReturnTest() {
-    BDDMockito.given(
-        accountRepository.findByLoginAndPassword(Mockito.anyString(), Mockito.anyString()))
+    BDDMockito
+        .given(accountRepository.findByLoginAndPassword(Mockito.anyString(), Mockito.anyString()))
         .willReturn(null);
-    Assertions.assertFalse(
-        accountService.findByLoginAndPassword(MOCK_USERNAME, MOCK_PWD).isPresent());
+    Assertions
+        .assertFalse(accountService.findByLoginAndPassword(MOCK_USERNAME, MOCK_PWD).isPresent());
   }
 
   @Test
   void givenUserFoundThenfindByUsernameAndPasswordReturnTest() {
-    BDDMockito.given(
-        accountRepository.findByLoginAndPassword(Mockito.anyString(), Mockito.anyString()))
+    BDDMockito
+        .given(accountRepository.findByLoginAndPassword(Mockito.anyString(), Mockito.anyString()))
         .willReturn(Account.builder().build());
-    Assertions.assertTrue(
-        accountService.findByLoginAndPassword(MOCK_USERNAME, MOCK_PWD).isPresent());
+    Assertions
+        .assertTrue(accountService.findByLoginAndPassword(MOCK_USERNAME, MOCK_PWD).isPresent());
   }
 }

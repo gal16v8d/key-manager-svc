@@ -36,17 +36,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/login-accounts")
 public class AccountLoginController {
 
-  private static final String ACCOUNT_NOT_FOUND =
-      "There is no match for the given account args.";
+  private static final String ACCOUNT_NOT_FOUND = "There is no match for the given account args.";
   private final AccountLoginConverter accountLoginConverter;
   private final AccountLoginRequestConverter accountLoginRequestConverter;
   private final AccountService accountService;
   private final AccountLoginService accountLoginService;
 
-  private Optional<AccountLogin> findByLoginAndAccountId(
-      String login, Long accountId) {
-    return accountService
-        .findByLogin(login)
+  private Optional<AccountLogin> findByLoginAndAccountId(String login, Long accountId) {
+    return accountService.findByLogin(login)
         .map(accountLoginService::findByAccount)
         .orElseGet(Collections::emptyList)
         .stream()
@@ -56,21 +53,17 @@ public class AccountLoginController {
 
   @Operation(summary = "Get some specific account using login and accountId.")
   @GetMapping("/{login}/{accountId}")
-  public ResponseEntity<?> get(
-      @PathVariable("login") String login,
+  public ResponseEntity<?> get(@PathVariable("login") String login,
       @PathVariable("accountId") Long accountId) {
-    return findByLoginAndAccountId(login, accountId)
-        .map(accountLoginConverter::convert)
+    return findByLoginAndAccountId(login, accountId).map(accountLoginConverter::convert)
         .map(ResponseEntity::ok)
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
-  @Operation(
-      summary = "Get all the associated accounts using the login.")
+  @Operation(summary = "Get all the associated accounts using the login.")
   @GetMapping("/{login}")
   public ResponseEntity<?> getAllByUser(@PathVariable("login") String login) {
-    return accountService
-        .findByLogin(login)
+    return accountService.findByLogin(login)
         .map(accountLoginService::findByAccount)
         .map(ResponseEntity::ok)
         .orElseGet(() -> ResponseEntity.notFound().build());
@@ -78,10 +71,8 @@ public class AccountLoginController {
 
   @Operation(summary = "Creates an account.")
   @PostMapping("/{login}")
-  public ResponseEntity<?> save(
-      @PathVariable("login") String login,
-      @Valid @RequestBody AccountLoginRequest request,
-      BindingResult bResultado) {
+  public ResponseEntity<?> save(@PathVariable("login") String login,
+      @Valid @RequestBody AccountLoginRequest request, BindingResult bResultado) {
     if (bResultado.hasErrors()) {
       return new ResponseEntity<>(bResultado.getAllErrors(), HttpStatus.BAD_REQUEST);
     }
@@ -97,16 +88,13 @@ public class AccountLoginController {
 
   @Operation(summary = "Updates an account.")
   @PutMapping("/{login}/{accountId}")
-  public ResponseEntity<?> update(
-      @PathVariable("login") String login,
-      @PathVariable("accountId") Long accountId,
-      @Valid @RequestBody AccountLoginRequest request,
+  public ResponseEntity<?> update(@PathVariable("login") String login,
+      @PathVariable("accountId") Long accountId, @Valid @RequestBody AccountLoginRequest request,
       BindingResult bResultado) {
     if (bResultado.hasErrors()) {
       return new ResponseEntity<>(bResultado.getAllErrors(), HttpStatus.BAD_REQUEST);
     }
-    Optional<AccountLogin> accountLoginOptional =
-        findByLoginAndAccountId(login, accountId);
+    Optional<AccountLogin> accountLoginOptional = findByLoginAndAccountId(login, accountId);
     if (accountLoginOptional.isPresent()) {
       AccountLogin accountLogin = accountLoginRequestConverter.convert(request);
       accountLogin.setId(accountId);
@@ -122,20 +110,15 @@ public class AccountLoginController {
 
   @Operation(summary = "Allows to delete an account.")
   @DeleteMapping("/{login}/{accountId}")
-  public ResponseEntity<?> delete(
-      @PathVariable("login") String login,
+  public ResponseEntity<?> delete(@PathVariable("login") String login,
       @PathVariable("accountId") Long accountId) {
-    return findByLoginAndAccountId(login, accountId)
-        .map(
-            (AccountLogin accountLogin) -> {
-              accountLoginService.delete(accountLogin.getId());
-              return ResponseEntity.noContent().build();
-            })
-        .orElseGet(this::getNotFoundResponse);
+    return findByLoginAndAccountId(login, accountId).map((AccountLogin accountLogin) -> {
+      accountLoginService.delete(accountLogin.getId());
+      return ResponseEntity.noContent().build();
+    }).orElseGet(this::getNotFoundResponse);
   }
 
   private ResponseEntity<Object> getNotFoundResponse() {
-    return new ResponseEntity<>(
-        ACCOUNT_NOT_FOUND, HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>(ACCOUNT_NOT_FOUND, HttpStatus.NOT_FOUND);
   }
 }
