@@ -7,7 +7,7 @@ import com.gsdd.keymanager.services.AccountService;
 import com.gsdd.keymanager.utils.KmgrCypher;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;

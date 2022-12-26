@@ -1,9 +1,9 @@
 package com.gsdd.keymanager.interceptor;
 
 import com.gsdd.keymanager.exceptions.MissingHeaderException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +22,6 @@ public class HeaderInterceptor implements HandlerInterceptor {
       "/swagger-ui",
       "/swagger-resources/",
       "/v3/api-docs",
-      "/v3/api-docs/",
       "/webjars/");
   @Value("${kmgr.http.apiKey}")
   private String apiKey;

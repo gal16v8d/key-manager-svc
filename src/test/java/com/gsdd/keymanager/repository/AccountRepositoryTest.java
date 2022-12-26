@@ -2,7 +2,7 @@ package com.gsdd.keymanager.repository;
 
 import com.gsdd.keymanager.entities.Account;
 import com.gsdd.keymanager.repositories.AccountRepository;
-import javax.persistence.PersistenceException;
+import jakarta.persistence.PersistenceException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
