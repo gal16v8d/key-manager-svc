@@ -52,7 +52,7 @@
 
 		<log4j.version>2.19.0</log4j.version>
 		<derby.version>10.12.1.1</derby.version>
-		<cypher-util.version>2.0.1</cypher-util.version>
+		<cypher-util.version>2.0.3</cypher-util.version>
 		<springdoc.openapi.ui.version>2.0.2</springdoc.openapi.ui.version>
 	</properties>
 
