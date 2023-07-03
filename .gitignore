@@ -305,4 +305,4 @@ gradle-app.setting
 
 ### Derby DB ###
 *.dat
-*/kmgr.DB/*
+*kmgr/*

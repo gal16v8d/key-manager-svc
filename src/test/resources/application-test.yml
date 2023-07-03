@@ -1,0 +1,3 @@
+spring:
+  datasource:
+    url: jdbc:derby:./kmgr/kmgr-test.DB;create=true

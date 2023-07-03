@@ -32,12 +32,12 @@ public class KeymanagerApplication {
   }
 
   @Bean
-  public FilterRegistrationBean<CorsFilter> simpleCorsFilter() {
+  FilterRegistrationBean<CorsFilter> simpleCorsFilter() {
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     CorsConfiguration config = new CorsConfiguration();
     config.setAllowCredentials(Boolean.TRUE);
     // *** URL below needs to match the client URL and port ***
-    config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:4200"));
+    config.setAllowedOrigins(Arrays.asList("http://localhost:5174", "http://localhost:4200"));
     config.setAllowedMethods(Collections.singletonList("*"));
     config.setAllowedHeaders(Collections.singletonList("*"));
     source.registerCorsConfiguration("/**", config);

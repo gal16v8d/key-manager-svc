@@ -4,7 +4,7 @@ import com.gsdd.keymanager.exceptions.PasswordException;
 import com.gsdd.keymanager.requests.AuthRequest;
 import com.gsdd.keymanager.responses.AuthResponse;
 import com.gsdd.keymanager.services.AccountService;
-import com.gsdd.keymanager.utils.KmgrCypher;
+import com.gsdd.keymanager.utils.KmgrCipher;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -36,7 +36,7 @@ public class AuthController {
       return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
     }
     return accountService
-        .findByLoginAndPassword(request.getLogin(), KmgrCypher.CYPHER.apply(request.getPassword()))
+        .findByLoginAndPassword(request.getLogin(), KmgrCipher.ENCODE.apply(request.getPassword()))
         .map(account -> ResponseEntity.ok(AuthResponse.builder().token(secureKey).build()))
         .orElseThrow(() -> new PasswordException("User or password incorrect"));
   }
