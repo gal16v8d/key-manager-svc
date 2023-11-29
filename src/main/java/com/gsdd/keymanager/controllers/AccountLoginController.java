@@ -57,7 +57,7 @@ public class AccountLoginController {
       @PathVariable("accountId") Long accountId) {
     return findByLoginAndAccountId(login, accountId).map(accountLoginConverter::convert)
         .map(ResponseEntity::ok)
-        .orElseGet(ResponseEntity.notFound()::build);
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @Operation(summary = "Get all the associated accounts using the login.")
@@ -66,7 +66,7 @@ public class AccountLoginController {
     return accountService.findByLogin(login)
         .map(accountLoginService::findByAccount)
         .map(ResponseEntity::ok)
-        .orElseGet(ResponseEntity.notFound()::build);
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @Operation(summary = "Creates an account.")
@@ -83,7 +83,7 @@ public class AccountLoginController {
         accountLoginService.save(accountLoginRequestConverter.convert(request));
     return Optional.ofNullable(accountLogin)
         .map(ResponseEntity.status(HttpStatus.CREATED)::body)
-        .orElseGet(ResponseEntity.internalServerError()::build);
+        .orElseGet(() -> ResponseEntity.internalServerError().build());
   }
 
   @Operation(summary = "Updates an account.")
@@ -102,7 +102,7 @@ public class AccountLoginController {
       AccountLogin updatedAccount = accountLoginService.update(accountLogin);
       return Optional.ofNullable(updatedAccount)
           .map(ResponseEntity::ok)
-          .orElseGet(ResponseEntity.status(HttpStatus.NOT_MODIFIED)::build);
+          .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_MODIFIED).build());
     } else {
       return getNotFoundResponse();
     }
