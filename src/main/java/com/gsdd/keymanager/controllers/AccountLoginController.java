@@ -76,7 +76,7 @@ public class AccountLoginController {
     if (bResultado.hasErrors()) {
       return ResponseEntity.badRequest().body(bResultado.getAllErrors());
     }
-    if (!accountService.findByLogin(login).isPresent()) {
+    if (accountService.findByLogin(login).isEmpty()) {
       return ResponseEntity.badRequest().body("Usuario no válido");
     }
     AccountLogin accountLogin =
@@ -90,9 +90,9 @@ public class AccountLoginController {
   @PutMapping("/{login}/{accountId}")
   public ResponseEntity<?> update(@PathVariable("login") String login,
       @PathVariable("accountId") Long accountId, @Valid @RequestBody AccountLoginRequest request,
-      BindingResult bResultado) {
-    if (bResultado.hasErrors()) {
-      return ResponseEntity.badRequest().body(bResultado.getAllErrors());
+      BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+      return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
     }
     Optional<AccountLogin> accountLoginOptional = findByLoginAndAccountId(login, accountId);
     if (accountLoginOptional.isPresent()) {

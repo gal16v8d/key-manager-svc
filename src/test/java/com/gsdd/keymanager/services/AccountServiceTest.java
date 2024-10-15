@@ -29,26 +29,26 @@ class AccountServiceTest {
   }
 
   @Test
-  void givenUserNotFoundThenfindByUsernameReturnTest() {
+  void givenUserNotFoundThenFindByUsernameReturnTest() {
     given(accountRepository.findByLogin(anyString())).willReturn(null);
     Assertions.assertFalse(accountService.findByLogin(MOCK_USERNAME).isPresent());
   }
 
   @Test
-  void givenUserFoundThenfindByUsernameReturnTest() {
+  void givenUserFoundThenFindByUsernameReturnTest() {
     given(accountRepository.findByLogin(anyString())).willReturn(Account.builder().build());
     Assertions.assertTrue(accountService.findByLogin(MOCK_USERNAME).isPresent());
   }
 
   @Test
-  void givenUserNotFoundThenfindByUsernameAndPasswordReturnTest() {
+  void givenUserNotFoundThenFindByUsernameAndPasswordReturnTest() {
     given(accountRepository.findByLoginAndPassword(anyString(), anyString())).willReturn(null);
     Assertions
         .assertFalse(accountService.findByLoginAndPassword(MOCK_USERNAME, MOCK_PWD).isPresent());
   }
 
   @Test
-  void givenUserFoundThenfindByUsernameAndPasswordReturnTest() {
+  void givenUserFoundThenFindByUsernameAndPasswordReturnTest() {
     given(accountRepository.findByLoginAndPassword(anyString(), anyString()))
         .willReturn(Account.builder().build());
     Assertions

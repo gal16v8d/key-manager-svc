@@ -61,9 +61,9 @@ public class AccountController {
   @Operation(summary = "Update user account data.")
   @PutMapping("/{id}")
   public ResponseEntity<?> update(@PathVariable("id") Long id,
-      @Valid @RequestBody AccountRequest request, BindingResult bResultado) {
-    if (bResultado.hasErrors()) {
-      return ResponseEntity.badRequest().body(bResultado.getAllErrors());
+      @Valid @RequestBody AccountRequest request, BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+      return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
     }
 
     return findById(id).map((Account data) -> {

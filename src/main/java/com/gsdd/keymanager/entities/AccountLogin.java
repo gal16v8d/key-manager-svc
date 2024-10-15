@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.UniqueConstraint;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.AccessLevel;
@@ -36,6 +37,7 @@ import lombok.NoArgsConstructor;
     uniqueConstraints = @UniqueConstraint(columnNames = {"account_id", "account_name"}))
 public class AccountLogin implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = -5799982073302238435L;
 
   @Id
@@ -50,7 +52,7 @@ public class AccountLogin implements Serializable {
   private String accountName;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "type_id", nullable = true)
+  @JoinColumn(name = "type_id")
   private AccountType accountType;
 
   @Column(name = "login", nullable = false, length = 64)
@@ -59,7 +61,7 @@ public class AccountLogin implements Serializable {
   @Column(name = "password", nullable = false, length = 128)
   private String password;
 
-  @Column(name = "url", nullable = true, length = 512)
+  @Column(name = "url", length = 512)
   private String url;
 
   @Temporal(TemporalType.DATE)

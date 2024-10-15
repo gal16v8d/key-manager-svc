@@ -3,6 +3,7 @@ package com.gsdd.keymanager.requests;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.io.Serial;
 import java.io.Serializable;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +20,7 @@ import lombok.Generated;
 @Schema(description = "Base properties to create an account related to an user.")
 public class AccountLoginRequest implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 4085316621551574824L;
 
   @Schema(description = "Account association.")
